@@ -4,19 +4,19 @@
 ## 📌 읽는 중 (reading~) 📌
 
 
-| [객체지향의 사실과 오해 역할, 책임, 협력 관점에서 본 객체지향](http://www.yes24.com/Product/Goods/18249021?OzSrank=1) | [팀 개발을 위한 Git GitHub 시작하기](http://www.yes24.com/Product/Goods/85382769?OzSrank=1) | [이것이 취업을 위한 코딩 테스트다 with 파이썬](http://www.yes24.com/Product/Goods/91433923?OzSrank=1) |
+| [팀 개발을 위한 Git GitHub 시작하기](http://www.yes24.com/Product/Goods/85382769?OzSrank=1) | [이것이 취업을 위한 코딩 테스트다 with 파이썬](http://www.yes24.com/Product/Goods/91433923?OzSrank=1) |[자바스크립트 코딩의 기술](http://www.yes24.com/Product/Goods/85019231?OzSrank=12)|
 | :---: | :---: | :---: |
-|![객체지향의 사실과 오해](http://image.yes24.com/momo/TopCate511/MidCate005/51040273.jpg)|![팀 개발을 위한 Git GitHub 시작하기](http://image.yes24.com/goods/85382769/L )|![이것이 취업을 위한 코딩 테스트다 with 파이썬](http://image.yes24.com/goods/91433923/L)|
-|[자바스크립트 코딩의 기술](http://www.yes24.com/Product/Goods/85019231?OzSrank=12)|[Do it! 자료구조와 함께 배우는 알고리즘 입문 자바 편](http://www.yes24.com/Product/Goods/60547893?OzSrank=3)| |
-|![자바스크립트 코딩의 기술](http://image.yes24.com/goods/85019231/L)|![Do it! 자료구조와 함께 배우는 알고리즘 입문 자바 편](http://image.yes24.com/goods/60547893/L)||
+|![팀 개발을 위한 Git GitHub 시작하기](http://image.yes24.com/goods/85382769/L )|![이것이 취업을 위한 코딩 테스트다 with 파이썬](http://image.yes24.com/goods/91433923/L)|![자바스크립트 코딩의 기술](http://image.yes24.com/goods/85019231/L)|
+|[Do it! 자료구조와 함께 배우는 알고리즘 입문 자바 편](http://www.yes24.com/Product/Goods/60547893?OzSrank=3)| |
+|![Do it! 자료구조와 함께 배우는 알고리즘 입문 자바 편](http://image.yes24.com/goods/60547893/L)||
 ## ⭐ 읽은 책 ⭐
 |[Do it! 오라클로 배우는 데이터베이스 입문](http://www.yes24.com/Product/Goods/65849798)|[Do it! HTML+CSS+자바스크립트 웹 표준의 정석](http://www.yes24.com/Product/Goods/96674934)|[모두의 SQL](http://www.yes24.com/Product/Goods/64434562?OzSrank=1)|
 | :---: | :---: | :---: | 
 |![Do it! 오라클로 배우는 데이터베이스 입문](http://image.yes24.com/goods/65849798/L)|![Do it! HTML+CSS+자바스크립트 웹 표준의 정석](http://image.yes24.com/goods/96674934/L)|![모두의 SQL](http://image.yes24.com/goods/64434562/L)|
 |[이것이 자바다](http://www.yes24.com/Product/Goods/15651484)|[혼자 공부하는 자바](http://www.yes24.com/Product/Goods/74269939?OzSrank=1)|[모두의 딥러닝](http://www.yes24.com/Product/Goods/86611190?OzSrank=1)|
 |![이것이 자바다](http://image.yes24.com/goods/15651484/L)|![혼자 공부하는 자바](http://image.yes24.com/goods/74269939/L)|![모두의 딥러닝](http://image.yes24.com/goods/86611190/L)
-|[최범균의 JSP 2.3 웹 프로그래밍 : 기초부터 중급까지](http://www.yes24.com/Product/Goods/23087975)|
-|![최범균의 JSP 2.3 웹 프로그래밍 : 기초부터 중급까지](http://image.yes24.com/momo/TopCate662/MidCate007/66169398.jpg)|
+|[최범균의 JSP 2.3 웹 프로그래밍 : 기초부터 중급까지](http://www.yes24.com/Product/Goods/23087975)|[객체지향의 사실과 오해 역할, 책임, 협력 관점에서 본 객체지향](http://www.yes24.com/Product/Goods/18249021?OzSrank=1)|
+|![최범균의 JSP 2.3 웹 프로그래밍 : 기초부터 중급까지](http://image.yes24.com/momo/TopCate662/MidCate007/66169398.jpg)|![객체지향의 사실과 오해](http://image.yes24.com/momo/TopCate511/MidCate005/51040273.jpg)|
 ## 🎈 읽을 책 🎈
 |[오브젝트](http://www.yes24.com/Product/Goods/74219491?OzSrank=1)|[엘레강트 오브젝트](http://www.yes24.com/Product/Goods/96193044?OzSrank=2)|[클린 애자일](http://www.yes24.com/Product/Goods/95728889)|
 | :---: | :---: | :---: |
