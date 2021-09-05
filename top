@@ -1,0 +1,35 @@
+* [33m1ce4112[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m [Fix] rename 디렉토리 명 변경
+* [33m603c2dd[m [Add] Tip 11 원래 데이터를 유지하는 새로운 객체 생성 예제
+* [33m6467fbc[m [Add] Tip10 객체를 이용해 정적인 키-값을 탐색하라 예제
+* [33m49e97be[m [UPDATE] 읽은 책(Git), 읽는 중(Node.js)
+* [33m54dee49[m [UPDATE] git 동작원리 이미지 추가
+* [33m2781885[m [UPDATE] Chapter 9: 인증 기능 살펴보기
+* [33m857431f[m [UPDATE] Chapter 8 : Git 내부 동작 원리
+* [33m2a4c7c9[m [UPDATE] Chapter 7 : 브랜치 생성 및 조작하기
+* [33mb72570a[m [ADD] Chapter07-CLI 환경에서 버전 관리 시작하기
+* [33m5dad7ef[m [ADD] Chapter06 CLI 환경에서 버전 관리 시작하기
+* [33md345df4[m [UPDATE] Chapter05_Handle_Git_with_Practice 작성
+* [33m6ab45eb[m [UPDATE] 읽은 책 update
+* [33m39bd6bc[m [UPDATE]객체지향의 사실과 오해: 부록 - 추상화 기법
+* [33md67ed18[m [UPDATE]객체지향의 사실과 오해: 07 함께 모으기
+* [33mbdfd863[m [UPDATE] 책 리스트
+* [33m3c62cd5[m [UPDATE] 객체지향의 사실과 오해: 06 객체 지도
+* [33m1eaf6ef[m [UPDATE] 객체지향의 사실과 오해: 06 객체 지도 작성중
+* [33ma416107[m [UPDATE] 객체지향의 사실과 오해: 05 책임과 메시지
+* [33mac41698[m [UPDATE]  객체지향의 사실과 오해: 05 책임과 메시지 작성 중
+* [33m5bcb914[m [UPDATE] 객체지향의 사실과 오해: 05 책임과 메시지 작성중
+* [33m8e1ea24[m [UPDATE]  제목수정
+* [33m1c9cfd9[m [UPDATE]  객체지향의 사실과 오해: 05 책임과 메시지 작성 중
+* [33m86ed2af[m [UPDATE]  Git Chapter05 생성
+* [33m60969c1[m [UPDATE] Chapter04 오타 수정
+* [33maa65821[m [UPDATE] Chapter04 역할,책임,협력
+* [33m99e930e[m [UPDATE] Chapter04 역할,책임,협력 작성중
+* [33m32ecded[m [UPDATE] 4 둘 이상의 원격저장소로 협업하기
+* [33m92e1a0d[m [UPDATE] 3 여러 명이 함께 Git으로 협업하기
+* [33m8c19caa[m [UPDATE] 0,1,2 Git 기본
+* [33md21d604[m [UPDATE] 03 타입과 추상화
+* [33m904f9e4[m [UPDATE] 03. 타입과 추상화
+* [33m472df6f[m [UPDATE] 02. 이상한 나라의 객체들
+* [33mc5b4d02[m [UPDATE] 01. 협력하는 객체들의 공동체
+* [33me2f8b50[m Update README.md
+* [33m748a96c[m Initial commit
