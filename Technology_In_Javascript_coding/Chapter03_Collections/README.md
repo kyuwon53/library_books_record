@@ -169,3 +169,129 @@ function displayBill(bill){
   - 반환된 값은 `맵이터레이터(MapIterator)`라고 부른다.
   
 
+<br>
+
+***
+<br><br>
+
+## TIP 14 : 맵과 펼침 연산자로 키-값 데이터를 순회하라 🔍
+
+- 키-값 컬렉션에 항목을 자주 추가하거나 삭제하는 경우에는 객체보다 맵을 사용하는 것이 적합하다. 
+
+```js
+const filters ={
+  색상: '검정색',
+  견종: '래브라도리트리버',
+};
+
+function getAppliedFilters(filters){
+  const keys = Object.keys(filters);
+  const applied = [];
+  for (const key of keys){
+    applied.push(`${key}:${filters[key]}`);
+  }
+  return `선택한 조건은 ${applied.join(', ')} 입니다.`;
+}
+
+/* 
+getAppliedFilters(filters)
+"선택한 조건은 색상:검정색, 견종:래브라도리트리버 입니다." */
+
+
+
+```
+- for 문을 실행하는 동안 객체를 참조해 값을 꺼낸다.
+- 객체에서 순서가 보장되지 않는다. (정렬할 수 없다.)
+- 필터링 조건을 정렬하려면 먼저 키를 정렬해야 한다. 
+
+```js
+function getAppliedFilters(filters){
+  const keys = Object.keys(filters);
+  keys.sort();      // 키 정렬
+  const applied = [];
+  for (const key of keys){
+    applied.push(`${key}:${filters[key]}`);
+  }
+  return `선택한 조건은 ${applied.join(', ')} 입니다.`;
+}
+```
+- for...of : 컬렉션의 각 값을 하나씩 반환 
+```js
+const filters = new Map()
+  .set('색상', '검정색')
+  .set('견종','래브라도레트리버');
+
+function checkFilters(filters){
+  for (const entry of filters){
+    console.log(entry)
+  }
+}
+
+```
+- 이터레이터는 키-값 쌍을 넘겨준다. 
+
+```js
+filters.entries();
+// MapIterator {"색상" => "검정색", "견종" => "래브라도레트리버"}
+```
+- entries() 메서드는 맵에 있는 키-값을 쌍으로 묶은 맵이터레이터를 반환 
+- 맵을 순회할 때 키와 값을 쌍으로 받아서 사용한다. 
+
+- for 문을 이용해서 키-값을 문자열로 변환하는 메서드
+```js
+function getAppliedFilters(filters){
+  const applied = [];
+  for (const [key, value] of filters){
+    applied.push(`${key}:${value}`);
+  }
+  return `선택한 조건은 ${applied.join(', ')} 입니다.`;
+}
+getAppliedFilters(filters);
+// "선택한 조건은 색상:검정색, 견종:래브라도레트리버 입니다."
+```
+- 맵이 순서를 저장한다. 
+- 배열의 경우처럼 정렬 메서드가 내장되어 있지 않다. 
+  - 펼침 연산자로 해결가능
+  - 맵 객체의 경우 펼침 연산자가 키-값 쌍이 반환된다. 
+  ```js
+    console.log(...filters);  
+  // ["색상", "검정색"],["견종", "래브라도레트리버"]
+    ```
+
+```js
+function getAppliedFilters(filters){
+  const applied = [...filters].map(([key, value])=>{
+    return `${key}:${value}`;
+  });
+  return `선택한 조건은 ${applied.join(', ')} 입니다.`;
+}
+
+getAppliedFilters(filters);
+// "선택한 조건은 색상:검정색, 견종:래브라도레트리버 입니다."
+
+```
+```js
+function sortByKey(a, b){
+    return a[0] > b[0] ? 1 : -1;
+}
+
+function getAppliedFilters(filters){
+  const applied = [...filters]
+    .sort(sortByKey)
+    .map(([key, value])=>{
+      return `${key}:${value}`;
+    })
+    .join(', ');
+  return `선택한 조건은 ${applied}입니다.`;
+}
+
+getAppliedFilters(filters);
+// "선택한 조건은 색상:검정색, 견종:래브라도레트리버 입니다."
+
+```
+1. 맵을 배열로 변환
+2. 배열을 정렬
+3. 배열에 담긴 키-값 쌍을 `키:값` 형식의 문자열로 변환
+4. 배열의 항목을 연결해서 문자열을 만듬
+5. 템플릿 리터럴을 이용해서 다른 정보와 함께 문자열로 병합함 
+
