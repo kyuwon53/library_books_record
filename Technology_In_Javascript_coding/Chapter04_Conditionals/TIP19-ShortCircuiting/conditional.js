@@ -22,3 +22,7 @@ function getImage(userConfig){
   }
   return img;
 }
+
+// userConfig.images.length -> 0
+// if(userConfig.images) -> true
+
