@@ -13,3 +13,6 @@ const greet = (first, last) => {
 const formatUser = name => {
   return `${capitalize(name)}님이 로그인했습니다.`;
 }
+
+applyCustomGreeting('mark', name => `안녕, ${name}!`);
+
