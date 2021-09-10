@@ -13,3 +13,11 @@ function greet(first, last){
 function formatUser(name){
   return `${capitalize(name)}님이 로그인했습니다.`;
 }
+
+function appllyCustomGreeting(name, callback){
+  return callback(capitalize(name));
+}
+
+appllyCustomGreeting('mark', function (name){
+  return `안녕, ${name}! `;
+});
