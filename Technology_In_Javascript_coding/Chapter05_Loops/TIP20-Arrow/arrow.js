@@ -5,3 +5,7 @@ const capitalize = name => {
 const key = () => {
   return 'abc123';
 }
+
+const greet = (first, last) => {
+  return `안녕하세요, ${capitalize(first)} ${capitalize(last)}님`;
+}
