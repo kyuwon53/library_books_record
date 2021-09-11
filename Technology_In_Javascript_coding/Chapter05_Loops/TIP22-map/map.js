@@ -15,3 +15,11 @@ const band = [{
     instrument: 'drums',
   },
 ];
+
+function getInstrument(member){
+  return member.instrument;
+}
+
+const instruments = band.map(getInstrument);
+
+// ['guitar', 'guitar', 'bass', 'drums']
