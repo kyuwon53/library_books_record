@@ -99,4 +99,47 @@
   - 결과: {developers: 2, non-developers: 3}
 
     
+<br>
+
+***
+<br><br>
+
+## TIP 22 : map() 메서드로 비슷한 길이의 배열을 생성하라 🔍
+
+- `map()` 메서드를 이용해 배열에 들어있는 정보의 부분집합을 생성하는 방법
+- `map()` 메서드는 배열에 메서드의 콜백에서 반환하는 정보가 담김  
+  - 다른 배열 메서드에 비해 반환값을 알기 쉽다. 
+- 맵 함수는 배열에 있는 한 가지 속성을 반환하거나 배열에 있는 값을 가져와서 다른 형식의 값을 반환 
+
+- `map()` 메서드를 사용하면 새로운 값을 담을 배열을 준비할 필요가 없다. 
+  - 배열 메서드의 일부로 포함되어 있기 때문
+- `push()` 메서드로 정보를 옮길 필요도 없다. 
+  - `map()` 메서드는 맵 함수의 실행 결과를 반환될 배열에 추가하기 때문
+
+- 원본 배열의 각 항목을 인수로 받아 새롭게 생성될 배열에 담길 값을 반환하는 함수를 만드는 것뿐
+
+```js
+
+function getInstrument(member){
+  return member.instrument;
+}
+
+for (let i =0; i < band.length; i++){
+  instruments.push(getInstrument(band[i]));
+}
+
+// for문 대신 배열 메서드
+const instruments = band.map(getInstrument);
+
+// ['guitar', 'guitar', 'bass', 'drums']
+```
+- 예측 가능하면서도 단순 
+
+```js
+// 기명 함수를 화살표 함수를 사용해 익명 함수로 바꾸기 
+const instrument = band.map(member => member.instrument);
+
+```
+- 인수를 하나만 받기 때문에 괄호를 사용할 필요가 없다. 
+- 또한, 함수 몸체는 한 줄에 불과하므로 중괄호나 return 문을 사용할 필요도 없다. 
 
