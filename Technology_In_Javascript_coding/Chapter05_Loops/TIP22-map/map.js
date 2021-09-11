@@ -23,3 +23,6 @@ function getInstrument(member){
 const instruments = band.map(getInstrument);
 
 // ['guitar', 'guitar', 'bass', 'drums']
+
+// 기명 함수를 화살표 함수를 사용해 익명 함수로 바꾸기 
+const instrument = band.map(member => member.instrument);
