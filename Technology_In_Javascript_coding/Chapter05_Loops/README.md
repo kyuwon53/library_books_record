@@ -218,3 +218,33 @@ const librarian = instructors.find(instructors => {
 
         ```
       - 단점: 하드 코딩을 해야한다. 
+
+    
+<br>
+
+***
+<br><br>
+
+## TIP 24 : forEach()로 동일한 동작을 적용하라 🔍
+
+- `forEach()`는 예측 가능하면서도 다른 배열 메서드와 같이 작동해 함께 연결할 수 있다.
+- 배열의 각 항목을 인수로 하는 함수를 넘겨주나 아무런 동작도 하지 않는다. 
+- `forEach()` 에서 처리하는 동작은 모두 함수 외부에 영향을 준다. 
+  - 함수의 유효 범위 밖에 있는 무언가를 변경하는 것을 부수 효과하고 한다. 
+- `forEach()` 메서드는 부수 효과 없이는 아무 소용이 없다. 
+
+```js
+const names = ['walter', 'white'];
+const capitalized = names.forEach(name => name.toUpperCase());
+
+capitalized;
+// undefined
+```
+
+- 배열을 둬서 변경한 결과를 담을 수 있지만 배열을 직접 조작하는 것은 좋지 않다. 
+- **반드시 부수 효과가 필요한 경우에 `forEach()`를 사용해야 한다.**
+```js
+sailingClub.forEach(member => sendEmail(member));
+```
+- `forEach()`를 사용하는 가장 큰 이유는 체이닝 과정에서 다른 배열 메서드와 결합할 수 있기 때문
+- 매개 변수에 배열 메서드의 결괏값을 저장할 필요 없이 동일한 배열에서 여러 작업을 처리할 수 있다. 
