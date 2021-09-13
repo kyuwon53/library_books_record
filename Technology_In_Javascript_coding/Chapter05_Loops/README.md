@@ -174,4 +174,47 @@ const team = [
 
 - `filter()` 메서드에 전달하는 함수는 반드시 참 값을 반환해야 한다. 참 값을 반환하면 그 값은 유지된다. 
 - `filter()` 메서드는 항상 배열을 반환하며 조건에 일치하는 값이 없는 경우에도 배열을 반환 
+- `find()` 메서드는 참 또는 거짓 값을 반환하는 함수를 인수로 받고, 배열의 항목에 전달한 함수로 평가해 참 값을 반환하는 첫 번째 항목만 반환 
+- 참 값을 반환하는 항목이 없다면 `undefined`를 반환 
+- `find()` 메서드를 사용하는 경우
+  - 찾으려는 항목이 하나인 것을 알고 있는 경우
+  - 특정 항목의 첫 번째 인스턴스가 필요한 경우 
+  - 반복문에서 `break` 문을 사용하는 경우 
 
+```js
+// for문을 사용한 '기념 도서관'에서 근무하는 사서 찾기
+let memorialInstructor;
+
+for(let i = 0; i < instructors.length; i++){
+  if (instructors[i].libraries.includes('기념 도서관')){
+    memorialInstructor = instructors[i];
+    break;
+  }
+}
+
+// find() 메서드를 사용한 '기념 도서관'에서 근무하는 사서 찾기
+const librarian = instructors.find(instructors => {
+  return instructors.libraries.includes('기념 도서관');
+});
+
+```
+**장점**
+- 단순한 표현식
+- 예측 가능한 `const`로 변수 선언
+
+**단점**
+- 반환값을 확신할 수 없다. 
+  - 조건에 맞는 항목이 없을 때, `filter()` 메서드를 사용하면 빈 배열이 반환, `find()` 메서드를 사용하면 `undefined`가 반환됨
+    - 단락 평가를 이용하면 기본값을 추가해서 일치하는 항목이 없을 때 사용 가능   
+<br>
+
+      ```js
+        const image = [{
+          path: './me.jpg',
+          profile: false
+       }];
+
+       const profile = images.find(image => image.profile) || {path: './default.jpg'};
+
+        ```
+      - 단점: 하드 코딩을 해야한다. 
