@@ -209,3 +209,93 @@ function setRegion({ location, ...details }){
 - 새로운 키-값 쌍이 담긴 객체에 details를 펼쳐 넣으면 우리가 정확히 필요로 하는 객체를 만들어낼 수 있다. 
 - 객체를 다루는, 미묘하지만 강력한 방법
 
+<br>
+
+***
+<br><br>
+
+## TIP 31 : 나버지 매개변수로 여러 개의 인수를 변수로 전달하라 🔍
+
+나머지 매개변수를 이용해 개수를 알 수 없는 다수의 매개변수를 전달하자 
+
+- 매개변수를 객체로 전달하는 것은 훌륭한 기법이지만 전달하는 매개변수들이 서로 다르다는 것을 미리 알고 있는 경우에만 유용하다. 
+  - 즉, 객체를 다루는 경우에만 쓸모가 있다. 
+
+```js
+function validateCharacterCount(max, items){
+  return items.every(item => item.length < max);
+}
+
+validateCharacterCount(10, ['Hobbs', 'Eagles']);
+// true
+
+validateCharacterCount(10, 'wvoquune');
+// TypeError: items.every is not a function
+// 타입 오류: items.every는 함수가 아닙니다.
+```
+- `every()` 메서드는 배열의 모든 항목을 대상으로 콜백 함수를 실행해 모든 항목에서 참 값이 반환되면 결과적으로 `true`를 반환, 그렇지 않으면 `false`를 반환 
+- 배열로 전달하지 않으면 오류가 나는 코드다 
+
+```js
+function getArguments(){
+  return arguments;
+}
+getArguments('Bloomsday', 'June 16');
+// {'0': 'Bloomsday', '1': 'June 16' }
+function validateCharacterCount(max){
+  const items = Array.prototype.slice.call(arguments, 1);
+  return items.every(item => item.length < max );
+}
+
+validateCharacterCount(10, 'wvoquie');
+// true
+const tags = ['Hobbs', 'Eagles'];
+validateCharacterCount(10, ...tags);
+//true
+```
+- `arguments` 객체는 함수에 전달된 모든 인수를 담은 배열과 유사한 컬렉션 
+  - `arguments`는 객체이므로 배열로 변환해야 한다. 
+- 인수에도 펼침 연사자를 사용할 수 있다. 
+  - 매개변수를 목록으로 수집하는 경우에 문자열이나 배열을 쉽게 처리할 수 있다. 
+- `arguments`객체를 다루는 문법이 난해하다는 점이 큰 문제 
+- 함수 매개변수로 인수 목록을 받는다는 사실을 알기 어렵다.
+
+```js
+function getArguments(...args){
+  return args;
+}
+getArguments('Bloomsday', 'June 16');
+// ['Bloomsday', 'June 16']
+
+function validateCharacterCount(max, ...items){
+  return items.every(item => item.length < max );
+}
+
+validateCharacterCount(10, 'wvoquie');
+// true
+validateCharacterCount(10, ...['wvoquie']);
+// true
+const tags = ['Hobbs', 'Eagles'];
+validateCharacterCount(10, ...tags);
+// true
+validateCharacterCount(10, 'Hobbs', 'Eagles');
+// true
+```
+##### 나머지 인수를 사용하는 이유
+1. 인수를 배열로 다루는 것을 다른 개발자들에게 알려야 하는 경우
+2. 나머지 매개변수는 코드 디버깅에 좋은 방법이 될 수 있다. 
+3. 나머지 인수는 함수 간에 속성을 전달하면서 해당 속성을 조작할 필요가 없을 때 사용
+
+```js
+['Spirited Away', 'Princess Mononoke'].map((film, ...other) => {
+  console.log(other);
+  return film.toLowerCase();
+});
+// [0, ['Spirited Away', 'Princess Mononoke']]
+// [1, ['Spirited Away', 'Princess Mononoke']]
+```
+- 콜백 함수에서 검사 중인 항목의 순서와 전체 컬렉션을 전달받는다. 
+- 여러 개의 함수를 감싸서 인수를 전달할 때 유용한 방법
+- 객체의 키-값 쌍이나 배열에 담긴 나머지 값을 가져올 때도 사용할 수 있다. 
+- 나머지 매개변수를 사용할 때는 반드시 함수의 마지막 매개변수여야 한다. 
+- 해체 할당의 경우에도 마지막 값이어야 한다. 
