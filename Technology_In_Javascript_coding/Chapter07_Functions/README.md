@@ -97,3 +97,95 @@ describe('가격 표시', () => {
   - 함수에서 사용해야 할 때 옮겨뒀던 서비스를 주입해 테스트하는 것이 비동기 응답을 모의 객체로 처리하는 것보다 쉽다. 
   
 
+<br>
+
+***
+<br><br>
+
+## TIP 33 : 화살표 함수로 복잡도를 낮춰라 🔍
+
+### 해체 할당
+```js
+const name = {
+  first: 'Lemmy',
+  last: 'kilmister',
+};
+
+function getName({ first, last }){
+  return `${first} ${last}`;
+}
+```
+위 코드를 화살표 함수로 바꾸는 것은 매개변수와 템플릿 리터럴을 제외한 모든 것을 제거하고, `=>` 화살표를 추가하면 끝이다. 
+
+```js
+const getName = { first, last } => `${first} ${last}`;
+
+// Error: Uncaught SyntaxError: Malformed arrow function parameter list
+// 오류: 처리되지 않은 문법 오류: 잘못된 화살표 함수 매개변수 목록 
+```
+- 해체 할당, 나머지 매개변수, 매개변수 기본값 등을 사용하는 특별한 매개변수의 경우에는 괄호를 포함해야 한다. 
+
+- 특별한 매개변수를 사용할 때는 보통의 함수와 마찬가지로 매개변수를 괄호로 감싸자.
+
+```js
+const comic = {
+  first: 'Peter',
+  last: 'Bagge',
+  city: 'Seattle',
+  state: 'Washington',
+};
+
+const getName = ({ first, last }) => `${first} ${last}`;
+getName(comic);
+// Peter Bagge
+```
+- 객체를 반환하는 경우에는 객체를 괄호로 감싸야 한다.
+```js
+const getFullName = ({ first, last }) => ({ fullName: `${first} ${last}`});
+getFullName(comic);
+// { fullName: 'Peter Bagge' }
+```
+- 괄호를 사용해서 값을 반환할 때는 코드를 여러 줄에 걸쳐 작성할 수 있다. 
+- return 문을 생략하는 동시에 반환값을 여러 줄로 작성할 수 있다. 
+- 화살표 함수는 다른 함수를 반환하는 함수인 고차 함수를 만드는 데 좋다. 
+- 고차 함수는 그저 다른 함수를 반환하는 함수일 뿐이다. 
+
+```js
+const getNameAndLocation = ({first, last, city, state }) => ({
+  fullName: `${first} ${last}`,
+  location: `${city}, ${state}`,
+});
+getNameAndLocation(comic);
+// {
+//   fullName: 'Peter Bagge',
+//   location: 'Seattle, Washington'
+// }
+```
+```js
+const discounter = discount => {
+  return price => {
+    return price * (1 - discount);
+  };
+};
+const tenPercentOff = discounter(0.1);
+tenPercentOff(100);
+// 90
+```
+- 고차 함수의 반환값은 다른 함수이므로, 화살표 함수의 기능을 활용해서 return을 직접 작성하지 않고 중괄호 없이 함수를 반환할 수 있다. 
+
+```js
+const discounter = discount => price => price * (1 - discount);
+
+const tenPercentOff = discounter(0.1);
+tenPercentOff(100);
+// 90
+```
+- 고차 함수는 매개변수를 가두는 데 사용할 수 있을 뿐만 아니라, 배열 메서드와 나머지 매개변수에도 도움을 줄 수 있다. 
+- 다른 매개변수로 호출하기 전에 고차 함수에서 반환된 함수를 먼저 변수에 할당해 호출
+- 첫 번째 매개변수 바로 뒤에 괄호를 연결해서 두 번째 매개변수를 전달하면, 첫 번째 함수에 이어 바로 다른 함수를 호출할 수 있다. 
+
+```js
+discounter(0.1)(100);
+// 90
+```
+
