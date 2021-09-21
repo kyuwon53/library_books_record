@@ -28,3 +28,6 @@ const discounter = discount => price => price * (1 - discount);
 const tenPercentOff = discounter(0.1);
 tenPercentOff(100);
 // 90
+
+discounter(0.1)(100);
+// 90
