@@ -21,3 +21,12 @@ const dogs = [
     색상: '갈색',
   },
 ];
+
+function getDogNames(dogs, filterFunc){
+  return dogs
+    .filter(filterFunc)
+    .map(dog => dog['이름'])
+}
+
+getDogNames(dogs, dog => dog['무게'] < 20);
+// ['맥스']
