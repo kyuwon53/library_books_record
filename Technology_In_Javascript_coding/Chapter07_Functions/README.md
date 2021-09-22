@@ -294,7 +294,7 @@ const exhibitInfo = mergeProgramInformation(building, manager)(exhibit);
 ***
 <br><br>
 
-## TIP 35 : 커링과 배열 메서드를 조합한 부분 적용 함수를 사요하라 🔍
+## TIP 35 : 커링과 배열 메서드를 조합한 부분 적용 함수를 사용하라 🔍
 👉 함수의 부분 적용을 통해 변수를 저장해두는 방법
 
 - 고차 함수를 사용하면 값을 한 번 저장한 후 나중에 사용할 수 있는 새로운 함수를 만들어서 반복을 피할 수 있다. 
@@ -400,3 +400,82 @@ getDogNames(dogs, stateCheck('캔자스'));
 
 - 커링은 인수가 하나만 있어야 하는 함수를 작성할 때 훌륭한 도구이다.
 
+
+<br>
+
+***
+<br><br>
+
+## TIP 36 : 화살표 함수로 문맥 혼동을 피하라 🔍
+👉 화살표 함수를 이용해 문맥 오류를 피하는 방법
+
+- 함수의 유효 범위는 간단히 말하면 함수가 접근할 수 있는 변수
+- 문맥은 함수 또는 클래스에서 this 키워드가 참조하는 것이기도 하다
+- 유효 범위는 함수와 연관되어 있고, 문맥은 객체와 연관되어 있다.
+```js
+const validator = {
+  message: '는 유효하지 않습니다.',
+  setInvalidMessage(field){
+    return `${field}${this.message}`;
+  },
+};
+
+validator.setInvalidMessage('도시');
+// 도시는 유효하지 않습니다. 
+```
+- `setInvalidMessage()` 메서드는 `this.message`로 `message` 속성을 참조한다. 
+  - `setInvalidMessage()` 메서드가 호출될 때 함수에서 `this` 바인딩을 생성하면서 해당 함수가 담긴 객체도 문맥에 포함시킨다. 
+
+```js
+const validator = {
+  message: '는 유효하지 않습니다.',
+  setInvalidMessage(...fields){
+    return fields.map(function (field){
+      return `${field}${this.message}`;
+    });
+  },
+};
+```
+- 함수를 호출하면 `TypeError` 또는 `undefined`를 받는다
+
+```js
+validatorProblem.setInvalidMessages(field);
+// TypeError: Cannot read property 'message of undefined
+// 타입 오류: undefined의 속성 'message'를 읽을 수 없습니다.
+```
+- 함수를 호출할 때마다 호출되는 위치를 바탕으로 `this` 바인딩을 만든다. 
+- `map()` 메서드에 콜백 함수로 전달한 경우에는 `map()` 메서드의 문맥에서 호출되므로
+이 경우에는 `this` 바인딩이 `validator` 객체가 아니다. 이때의 문맥은 `전역 객체`가 된다.
+- 콜백 함수로 전달되면 `message` 속성에 접근할 수 없게 된다. 
+
+```js
+const validator = {
+  message: '는 유효하지 않습니다.',
+  setInvalidMessages(...fields){
+    return fields.map(field => {
+      return `${field}${this.message}`;
+    });
+  },
+};
+
+validator.setInvalidMessages('도시');
+// ['도시는 유효하지 않습니다.']
+```
+
+- 화살표 함수는 함수를 호출할 때 `this` 바인딩을 새로 만들지 않는다. 
+```js
+const validator = {
+  message: '는 유효하지 않습니다.',
+  setInvalidMessage: field => `${field}${this.message}`,
+};
+
+validatorMethod.setInvalidMessages(field);
+// TypeError: Cannot read property 'message' of undefined
+// 타입 오류: undefined의 속성 'message'를 읽을 수 없습니다.
+```
+- 현재 객체에 대해 새로운 `this` 문맥 바인딩을 만들지 않는다. 
+  - 새로운 문맥을 만들지 않았기 때문에 전역 객체에 바인딩된 것이다. 
+
+
+- 화살표 함수는 이미 문맥이 있고 다른 함수 내부에서 이 함수를 사용하려고 할 때 유용하다.
+  - 그렇지만 새로운 `this` 바인딩을 설정할 필요가 있을 때는 문제가 된다. 
