@@ -76,3 +76,84 @@ coupon.getExpirationMessage();
 - `this` 문맥을 연결해주는 생성자 함수를 이용해서 새로운 객체를 생성할 수 있다. 
 - 메서드를 호출하고 속성에도 접근할 수 있다. 
 - 이 모든 것이 직관적인 인터페이스를 이용한다.
+
+<br>
+
+***
+<br><br>
+
+## TIP 38 : 상속으로 메서드를 공유하라 🔍
+👉 클래스를 확장하고 부모 클래스의 메서드를 호출하는 방법 
+
+- 초기 버전의 자바스크립트에서 클래스 상속을 구현하는 것은 복잡한 과정이 필요
+  1. 객체의 속성을 순회
+  2. 개별 속성이 객체 프로토타입이 아닌 해당 객체에만 존재하는 속성인지 확인
+  3. 메서드를 추가하기 전에 부모로부터 새로운 객체에 프로토타입을 복사
+
+- 클래스를 사용하면 상속이 간단해진다. 
+- 상속을 사용할 때는 주의가 필요하다 
+
+```js
+import Coupon from './extend';
+class FlashCoupon extends Coupon{
+}
+const flash = new FlashCoupon(10);
+flash.price;
+// 10
+flash.getPriceText();
+// "$ 10"
+```
+- 새로운 속성이나 메서드를 추가할 것이 아니라면 상속에는 아무런 의미도 없다. 
+- 새로운 생성자에서 부모 클래스의 생성자에 접근하려면 `super()`를 호출해야 한다. 
+- `super()`는 부모 클래스의 생성자를 호출하기 때문에 부모 클래스의 생성자에 필요한 인수가 있다면 `super()`를 이용해서 넘겨준다.
+- 새로운 속성을 추가하거나 부모 생성자가 설정한 속성을 덮어 쓸 수 있다. 
+
+```js
+import Coupon from './extend';
+class FlashCoupon extends Coupon{
+  constructor(price, expiration){
+    super(price);
+    this.expiration = expiration || '2시간';
+  }
+}
+const flash = new FlashCoupon(10);
+flash.price;
+// 10
+flash.getExpirationMessage();
+// "이 쿠폰은 2시간 후에 만료됩니다"
+```
+- 부모 클래스에 있는 메서드를 사용하지만 `expiration` 속성은 자식 클래스에 있는 것을 사용한다. 
+  - 익숙한 메시지에 새로운 유효 기간이 적용됨
+
+- 메서드를 호출할 때마다 자바스크립트 엔진은 먼저 현재 클래스에 메서드가 있는지 확인
+- 만약 메서드가 없다면 상속 연결의 상위로 올라가서 각 클래스나 프로토타입을 확인
+- 즉, 클래스에 같은 이름의 메서드를 새로 작성하면 부모 클래스에서 상속한 메서드를 대체한다. 
+
+
+- 부모 클래스에 추가하는 모든 메서드를 자식 클래스가 상속받는다.
+  - 자식 클래스에서 필요하지 않은 메서드를 부모 클래스에 추가하면 자식 클래스가 비대해지기 쉽다.
+
+```js
+import Coupon from './extend';
+class FlashCoupon extends Coupon {
+  constructor(price, expiration){
+    super(price);
+    this.expiration = expiration || '2시간';
+  }
+  getExpirationMessage(){
+    return `이 쿠폰은 깜짝 쿠폰이며 ${this.expiration} 후에 만료됩니다.`;
+  }
+  isRewardsEligible(user){
+    return super.isRewardsEligible(user) && this.price > 20;
+  }
+  getRewards(user){
+    if (this.isRewardsEligible(user)){
+      this.price = this.price * 0.8 ;
+    }
+  }
+}
+
+export {FlashCoupon};
+```
+- 프로토타입 기반의 동작을 하기 때문에 레거시 코드와 클래스를 결합할 수 있는 이점이 있다. 
+
