@@ -47,3 +47,15 @@ const exhibitInfo = mergeProgramInformation(building, manager)(exhibit);
 //   address: 'Jayhawk Blvd',
 //   phone: '555-555-5555',
 // }
+ const birds = getBirds('kansas', 'wisconsin', 'new mexico');
+ // ['meadowlark', 'robin', 'roadrunner']
+
+ const zip = (...left) => (...right) => {
+  return left.map((item, i) => [item, right[i]]);
+ };
+ zip('kansas', 'wisconsin', 'new mexico')(...birds);
+//  [
+//    ['kansas', 'meadowlark'],
+//    ['wisconsin', 'robin'],
+//    ['new mexico', 'roadrunner']
+//  ]
