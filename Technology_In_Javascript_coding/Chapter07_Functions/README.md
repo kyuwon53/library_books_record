@@ -288,3 +288,83 @@ const exhibitInfo = mergeProgramInformation(building, manager)(exhibit);
 - 인터페이스를 간결하게 유지해야 할 때 매우 유용하다. 
 - 부분 적용 함수는 큰 노력 없이 매개변수를 결합할 수 있는 방법이다. 
 
+
+<br>
+
+***
+<br><br>
+
+## TIP 35 : 커링과 배열 메서드를 조합한 부분 적용 함수를 사요하라 🔍
+👉 함수의 부분 적용을 통해 변수를 저장해두는 방법
+
+- 고차 함수를 사용하면 값을 한 번 저장한 후 나중에 사용할 수 있는 새로운 함수를 만들어서 반복을 피할 수 있다. 
+- 고차 함수에서 반환된 함수는 바로 다시 호출할 필요가 없다. 
+- 고차 함수를 한 번 호출하면 계속해서 사용할 수 있는 새로운 함수가 반환되기 때문
+  - 인수를 하드 코딩해둔 함수를 작성하는 것과 같다.
+```js
+const setStrongHallProgram = mergeProgramInformation(building, manager);
+const programInfo = setStrongHallProgram(program);
+const exhibitInfo = setStrongHallProgram(exhibit);
+```
+- 고차 함수의 부분적용을 활용
+
+```js
+const setStrongHallProgram = program => {
+  const defaults = {
+    hours: '8 a.m. - 8 p.m.',
+    address: 'Jayhawk Blvd',
+    name: 'Augusto',
+    phone: '555-555-5555'
+  }
+  return {...defaults, ...program}
+}
+
+const programs = setStrongHallProgram(program);
+
+const exhibit = setStrongHallProgram(exhibit);
+```
+- 정보를 하드 코딩
+- 두 차례에 걸쳐 인수를 받는 고차 함수가 하드 코딩된 정보보다 유연하다 
+- 고차 함수를 이용하면 매개변수를 별도로 분리할 수 있따. 
+- 그렇지만 함수를 완전히 분리하기 전에 함수에 필요한 인수의 수를 줄일 수 있도록 인수를 분리하는 것이 훨씬 더 중요
+- 한 번에 인수를 하나만 받는 함수를 `커링(currying)`이라고 하며, 이는 하나의 인수만 전달하는 메서드를 다룰 때 매우 유용하다. 
+
+- 부분 적용 함수는 매개변수를 여러 번 받을 수 있따. 
+- 부분 적용 함수와 커링 함수 모두 원래보다 필요한 인수의 수가 적은 함수를 반환해 인수 수를 줄인다. 
+- 함수에는 함수가 받을 수 있는 전체 인수의 수가 있으며 항수라고 부른다. 
+- 부분 적용 함수는 원래의 함수보다 항수가 적은 함수를 반환한다. 
+- 커링 함수는 여러 개의 인수를 받는 함수에서 정확히 인수 하나만 받는 일련의 함수를 반환할 때 사용 
+
+```js
+function getDogNames(dogs, filter){
+  const [key, value] = filter;
+  return dogs
+    .filter(dog => dog[key] === value)
+    .map(dog => dog['이름']);
+}
+
+getDogNames(dogs, ['색상', '검정색']);
+// ['맥스', '도니']
+```
+- 강아지 배열을 첫 번째 매개변수로 전달하고, 배열 메서드 `filter()`와 `map()`을 조합해 최종 결과 집합을 얻는다. 
+
+1. 필터 함수에 제약이 있다. 
+  - `===`을 사용할 때만 작동한다. 
+2. 모든 배열 메서드와 마찬가지로 `map()`은 검사하는 항목만 인수로 받을 수 있기 때문에 유효 범위 내의 다른 변수들을 가져올 방법이 필요하다. 
+  - `map()`은 다른 함수 내부의 함수이므로 이를 감싸고 있는 함수의 변수에 접근할 수 있다.
+  - 즉, 매개변수를 이용해서 외부 함수에 필요한 변수를 전달할 방법이 필요하다.
+
+
+```js
+function getDogNames(dogs, filterFunc){
+  return dogs
+    .filter(filterFunc)
+    .map(dog => dog['이름'])
+}
+
+getDogNames(dogs, dog => dog['무게'] < 20);
+// ['맥스']
+```
+- 비교 함수를 하드 코딩하지 않고 필터 함수에 콜백 함수로 전달 
+- 변수를 사용할 때 직접 코딩해서 넣거나 유효 범위의 충돌이 없는지 확인하는 절차를 거치고 있다.
+
