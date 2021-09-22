@@ -11,3 +11,13 @@ Coupon.prototype.getExpirationMessage = function (){
 };
 coupon.getExpirationMessage();
 // 이 쿠폰은 2개월 후에 만료됩니다.
+
+class FlashCoupon extends Coupon {
+  constructor(price, expiration){
+    super(price);
+    this.expiration = expiration || '2시간';
+  }
+  getExpirationMessage(){
+    return `이 쿠폰은 깜짝 쿠폰이며 ${this.expiration} 후에 만료됩니다.`;
+  }
+}
