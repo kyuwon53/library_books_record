@@ -367,4 +367,36 @@ getDogNames(dogs, dog => dog['무게'] < 20);
 ```
 - 비교 함수를 하드 코딩하지 않고 필터 함수에 콜백 함수로 전달 
 - 변수를 사용할 때 직접 코딩해서 넣거나 유효 범위의 충돌이 없는지 확인하는 절차를 거치고 있다.
+- 부분 적용 함수를 변수에 할당해서 다른 함수에 데이터로 전달하는 방법으로 나머지 인수를 제공할 수 있다.
+
+```js
+const weightCheck = weight => dog => dog['무게'] < weight;
+
+getDogNames(dogs, weightCheck(20));
+// ['맥스']
+
+getDogNames(dogs, weightCheck(50));
+// ['맥스', '섀도']
+```
+- 커링 함수를 사용하면 여러 지점에서 다양한 매개변수를 전달할 수 있다. 
+- 함수를 데이터로 전달할 수 있다.
+- 반드시 두 개의 함수와 두 개의 인수 집합으로 제한할 필요가 없다. 
+
+```js
+const identity = field => value => dog => dog[field] === value;
+const colorCheck = identity('색상');
+const stateCheck = identity('지역');
+
+getDogNames(dogs, colorCheck('갈색'));
+// ['섀도']
+getDogNames(dogs, stateCheck('캔자스'));
+// ['섀도']
+```
+- 부분 적용 함수를 변수에 할당할 수 있고, 이 변수를 데이터로 전달할 수 도 있다. 
+- 모든 조건을 충족하는 데이터를 찾아야 한다면, 검사에 사용할 여러 개의 비교 함수를 전달하고 배열 메서드인 `every()`를 사용할 수 있다.
+  - `every()` 메서드는 모든 값이 `true`를 반환할 때 `true`를 반환합니다.
+- 최소한 하나의 조건을 충족하는 데이터를 찾는 경우에는 `every()` 대신 다른 배열 메서드 `some()`을 사용한다. 
+  - `some()` 메서드는 실행 결과 중 하나라도 true를 반환하면 true를 반환한다. 
+
+- 커링은 인수가 하나만 있어야 하는 함수를 작성할 때 훌륭한 도구이다.
 
