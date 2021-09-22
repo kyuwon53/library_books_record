@@ -189,3 +189,102 @@ discounter(0.1)(100);
 // 90
 ```
 
+<br>
+
+***
+<br><br>
+
+## TIP 34 : 부분 적용 함수로 단일 책임 매개변수를 관리하라 🔍
+
+- 고차 함수는 매개변수를 가두는 방법을 통해 특별한 값을 제공하므로, 나중에 원래의 인수에 접근할 수 있게 해두고 함수 실행을 마칠 수 있다. 
+- 매개변수를 분리해 함수의 의도를 명확하게 유지할 수 있다. 
+- 고차 함수는 다른 함수를 반환하는 함수이다. 
+- 함수 실행이 완전히 끝날때까지 최소한 구 단계에 걸친 매개변수가 존재한다. 
+- 부분 적용 함수를 사용할 경우, 일부 매개변수를 전달하면 해당 매개변수를 잠그는 함수가 반환되어 여기에 더 많은 매개변수를 사용할 수 있다. 
+- 부분 적용 함수를 이용하면 한 번에 전달해야 할 함수 인수의 수(항수(arity))가 줄어드는 대신 인수를 더 전달해야 하는 다른 함수를 반환한다. 
+- 서로 독립적인 여러 매개변수 집합을 둘 수 있다. 
+
+```js
+function mergeProgramInformation(building, manager, event){
+  const { hours, address } = building;
+  const { name, phone } = manager;
+  const defaults = {
+    hours,
+    address,
+    contact: name,
+    phone,
+  };
+
+  return { ...defaults, ...event};
+};
+
+const programInfo = mergeProgramInformation(building, manager, program);
+const exhibitInfo = mergeProgramInformation(building, manager, exhibit);
+```
+- 함수를 호출할 때마다 전달하는 첫 번째 매개변수는 동일하다 
+- 고차 함수를 이용해서 단일 책임 매개변수를 만들면 인수를 재사용할 수 있다. 
+- 첫 번째 매개변수 집합은 기초 데이터를 수집한다. 
+- 두 번째 매개변수 집합은 기초 데이터를 덮어 쓰는 사용자 지정 정보이다. 
+
+```js
+function mergeProgramInformation(building, manager){
+  const { hours, address } = building;
+  const { name, phone } = manager;
+  const defaults = {
+    hours,
+    address,
+    contact: name,
+    phone,
+  };
+
+  return program => {
+    return {...defaults, ...program };
+  };
+}
+
+const programInfo = mergeProgramInformation(building, manager)(program);
+// {
+//   name: 'Presenting Research',
+//   room: '415',
+//   hours: '3-6',
+//   address: 'Jayhawk Blvd',
+//   phone: '555-555-5555',
+// }
+const exhibitInfo = mergeProgramInformation(building, manager)(exhibit);
+// {
+//   name: 'Emerging Scholarship',
+//   contact: 'Dyan',  
+//   hours : '8 a.m. - 8 p.m.',
+//   address: 'Jayhawk Blvd',
+//   phone: '555-555-5555',
+// }
+```
+- 고차 함수는 완전히 완료되기 전에 여러 번 호출되어야 하는 함수이다. 
+- 한번에 함수의 두 부분을 모두 호출하려면 괄호에 이어 괄호를 작성하면 된다. 
+  - 외부 함수가 호출된 후 바로 내부 함수가 호출된다. 
+- 매개변수에 단일 책임을 부여하기는 했지만 반복까지 제거되지는 않는다. 
+- 부분 적용과 고차 함수를 사용해 매개변수에 단일 책임을 부여하는 데는 **나머지 매개변수를 재사용 할 수 있기 때문에** 한다. 
+- 인수 집합에서 나머지 매개변수는 한 번만 사용할 수 있다. 
+
+```js
+ const birds = getBirds('kansas', 'wisconsin', 'new mexico');
+ // ['meadowlark', 'robin', 'roadrunner']
+
+ const zip = (...left) => (...right) => {
+  return left.map((item, i) => [item, right[i]]);
+ };
+ zip('kansas', 'wisconsin', 'new mexico')(...birds);
+//  [
+//    ['kansas', 'meadowlark'],
+//    ['wisconsin', 'robin'],
+//    ['new mexico', 'roadrunner']
+//  ]
+```
+- 원본과 결괏값을 배열 쌍으로 연결해야 한다. 
+- 두 개의 배열을 쌍으로 결합하는 것은 매우 일반적인 작업이고 `zip함수`하고 부른다. 
+- 여러 매개변수를 사용할 수 있는 `zip 함수`를 작성하려면 원본 배열을 넘겨받는 고차 함수가 필요하고, 결괏값 배열을 넘겨받아서 결합하는 함수를 반환하게 만들어야 한다. 
+  - 위 예제에서는 원본 배열을 넘겨받는 고차 함수 : `...left`
+  - 결괏값 배열을 넘겨받아서 결함합는 함수 : `...right`
+- 인터페이스를 간결하게 유지해야 할 때 매우 유용하다. 
+- 부분 적용 함수는 큰 노력 없이 매개변수를 결합할 수 있는 방법이다. 
+
