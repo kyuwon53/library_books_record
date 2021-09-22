@@ -30,3 +30,39 @@ function getDogNames(dogs, filterFunc){
 
 getDogNames(dogs, dog => dog['무게'] < 20);
 // ['맥스']
+const weightCheck = weight => dog => dog['무게'] < weight;
+
+getDogNames(dogs, weightCheck(20));
+// ['맥스']
+
+getDogNames(dogs, weightCheck(50));
+// ['맥스', '섀도']
+
+const identity = field => value => dog => dog[field] === value;
+const colorCheck = identity('색상');
+const stateCheck = identity('지역');
+
+getDogNames(dogs, colorCheck('갈색'));
+// ['섀도']
+getDogNames(dogs, stateCheck('캔자스'));
+// ['섀도']
+
+function allFilters(dogs, ...checks){
+  return dogs
+    .filter(dog => checks.every(check => check(dog)))
+    .map(dog => dog['이름']);
+}
+
+allFilters(dogs, colorCheck('검정색'), stateCheck('캔자스'));
+// ['도니']
+
+function anyFilters(dogs, ...checks){
+  return dogs
+  .filter(dog => checks.some(check => check(dog)))
+  .map(dog => dog['이름']);
+}
+
+anyFilters(dogs, weightCheck(20), colorCheck('갈색'));
+// ['맥스', '섀도']
+
+
