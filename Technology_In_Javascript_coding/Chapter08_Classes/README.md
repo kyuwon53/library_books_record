@@ -332,6 +332,7 @@ const coupon = new Coupon(5);
 
 ## TIP 41 : 제너레이터로 이터러블 속성을 생성하라🔍
 👉 제너레이터를 이용해 복잡한 데이터 구조를 이터러블로 변환하는 방법
+
 - 이터러블은 데이터를 다룰 때 개별 데이터에 접근할 수 있도록 해서 좀 더 많은 유연성을 제공한다. 
 - 객체는 직접적으로 순회할 수 없다. 
 - 제너레이터라는 새롭고 특별한 함수를 이용하면 데이터를 한 번에 하나씩 반환할 수 있다. 
@@ -433,4 +434,83 @@ const family = new FamilyTree();
 // ['Doris', 'Martha', 'Dyan', 'Bea' ];
 ```
 - 제너레이터를 사용할 때의 이점은 다른 개발자들이 클래스의 세부 구현 내용을 알 필요가 없다는 것이다. 
+
+<br>
+
+***
+<br><br>
+
+## TIP 42 : bind()로 문맥 문제를 해결하라 🔍
+👉 `this`를 다룰 때 발생하는 오류를 `bind()`로 해결하는 방법 
+
+- 문맥 문제를 예방할 수 있는 다른 기법 
+```js
+class Validator {
+  constructor(){
+    this.message = '가 유효하지 않습니다.';
+  }
+  setInvalidMessage(field){
+    return `${field}${this.message}`;
+  }
+  setInvalidMessages(...fields){
+    return fields.map(this.setInvalidMessage);
+  }
+}
+```
+- `setInvalidMessage()` 메서드는 입력값 하나가 유효하지 않은 경우 이에 대한 메시지를 반환
+- `setInvalidMessages()` 메서드는 모든 입력값이 담긴 배열을 순회해 유효하지 않은 경우에 대한 일련의 메시지들을 반환 
+
+```js
+const Validator = new ValidatorProblem();
+Validator.setInvlidMessages('도시');
+// TypeError: Cannot read property 'messsage' of undefined
+// 타입 오류: undefined의 속성 'message'를 읽을 수 없습니다.
+```
+- 함수가 `this`를 사용할 때마다 우리가 연결한 객체로 연결될 것이다. 
+- 이것을 명시적 연결이라고 부르는데, 문맥이 런타임 자바스크립트 엔진에 의해 설정되지 않도록 우리가 직접 문맥을 선언하기 때문이다. 
+
+<br>
+
+- 함수를 `this`에 연결해서 기존의 문맥에 연결할 수 있다. 
+- 함수가 새로운 문맥을 생성하지 않고 기존의 문맥을 사용하게 만드는 것
+- 화살표 함수와 달리 함수는 여전히 `this` 연결을 생성한다. 
+
+```js
+class Validator {
+  constructor(){
+    this.message = '가 유효하지 않습니다.';
+  }
+  setInvalidMessage(field){
+    return `${field}${this.message}`;
+  }
+  setInvalidMessages(...fields){
+    return fields.map(this.setInvalidMessage.bind(this));
+  }
+}
+```
+- 유일한 단점은 다른 메서드에서 함수를 사용하면 다시 `bind()`로 연결해야 된다. 
+- 생성자에서 메서드와 같은 이름을 가진 속성에 `this`를 연결한 메서드를 설정해 `bind()`를 여러번 호출하는 것을 피한다. 
+- 생성자에서 화살표 함수를 생성하는 것과 매우 유사하다
+- 메서드를 원래의 위치에 그대로 유지할 수 있다는 것
+- 생성자에서 `this`에 연결할 뿐이다. 
+- 속성은 생성자에서 선언한다. 
+- 문맥도 속성과 마찬가지로 생성자에서만 설정한다. 
+```js
+class Validator {
+  constructor(){
+    this.message = '가 유효하지 않습니다.';
+    this.setInvalidMessage = this.setInvalidMessage.bind(this);
+  }
+
+  setInvalidMessage(field){
+    return `${field}${this.message}`;
+  }
+
+  setInvalidMessages(...fields){
+    return fields.map(this.setInvalidMessage);
+  }
+}
+```
+- `this`를 다루다가 예상하지 못한 동작이나 이상한 오류와 마주쳤다면 명시적으로 문맥을 연결할 수 있다.
+
 
