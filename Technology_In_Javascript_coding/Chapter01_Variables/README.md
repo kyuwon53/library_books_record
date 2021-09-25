@@ -159,4 +159,72 @@ function getLowestPriceDeclareation(item){
 }
 ```
 
+<br>
 
+***
+<br><br>
+
+## TIP 3 : 블록 유효 범위 변수로 정보를 격리하라 🔍
+👉 `for`문 또는 다른 반복문에서 `let`을 사용해 유효 범위 충돌을 방지하는 방법
+
+- 블록 유효 범위 변수 선언을 이용하면 변수는 블록 내에서만 접근 할 수 있다. 
+  - `if` 블록 내부에 변수를 선언하면 중괄호 밖에서는 접근할 수 없다 
+  - `for`문 내부에 선언한 변수도 `for`문의 중괄호 밖에서는 접근할 수 없다. 
+  - 반대로 함수 외부에 선언한 변수는 블록 내부에서 접근할 수 있다. 
+  - 함수의 최상위에서 블록 유효 범위 변수를 선언한 경우에는 함수 내부의 `if`문이나 `for`문에서 접근 할 수 있다. 
+
+  <br>
+
+  - 어휘적 유효 범위를 따르는 변수를 선언한 경우에는 함수 내부 어디서든 접근할 수 있다 
+    - 이 경우 `if` 블록 내부에서 생성한 변수를 함수 내부의 다른 곳에서 접근 할 수 있다. 
+    - `호이스팅`이라는 컴파일 과정 덕분에 변수가 선언되기도 전에 접근할 수 있다. 
+```js
+function addClick(items){
+  for (var i = 0; i < items.length; i++){
+    items[i].onClick = function (){
+      return i;
+    };
+  }
+  return items;
+}
+const example = [{}, {}];
+const clickSet = addClick(example);
+clickSet[0].onClick();
+```
+- 유효 범위의 문제
+- `var`로 할당한 변수는 함수 유효 범위를 따른다. (어휘적 유효 범위를 의미)
+- 즉, 함수 내에서 마지막으로 할당한 값을 참조한다. 
+```js
+function addClick(items){
+  for (var i = 0; i < items.length; i++){
+    items[i].onClick = (function (i){
+      return function () {
+        return i;
+      };
+    }(i));
+  }
+  return items;
+}
+const example = [{}, {}];
+const clickSet = addClick(example);
+clickSet[0].onClick();
+```
+- 전통적인 해결 방법은 클로저( 다른 함수가 사용할 수 있도록 함수 내부에서 변수를 생성하는 것), 고차 함수(다른 함수를 반환하는 함수), 즉시 실행 함수가 조합되어 있다. 
+
+```js
+function addClick(items){
+  for (let i = 0; i < items.length; i++){
+    items[i].onClick = function (){
+        return i;
+    };
+  }
+  return items;
+}
+const example = [{}, {}];
+const clickSet = addClick(example);
+clickSet[0].onClick();
+```
+- `var` 대신 `let`을 사용한 것뿐이다. 
+- `let`은 블록 유효 범위를 따르므로, 블록 내에서 선언한 변수는 해당 블록에서만 유효하다. 
+- `let`을 이용하면 `for` 문이 반복될 때마다 값을 잠근다. 
+- `var`를 사용하려 한 곳에 항상 `let`을 사용하는 것이 좋다. 
