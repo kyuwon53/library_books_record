@@ -9,3 +9,9 @@ function yell(name){
 }
 greet('Pankaj');
 // 'HI, PANKAJ!';
+
+function leapYearConverter(age){
+  return `윤년에 태어났다면 ${Math.floor(age / 4)} 살이야.`;
+}
+leapYearConverter(34);
+// "윤년에 태어났다면 8살이야."
