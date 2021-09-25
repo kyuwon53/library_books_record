@@ -67,4 +67,96 @@ const discountable = cart.filter(item => item.discountAvailable);
 - 결과는 같지만 조작을 사용하지 않았다. 
 - `const`를 기본으로 사용하자. 
 
+<br>
+
+***
+<br><br>
+
+## TIP 2 : let과 const로 유효 범위 충돌을 줄여라 🔍
+👉 값이 변경되는 경우 가장 좋은 선택은 `let`
+
+- 변수를 다룰 때는 재할당을 피하는 것이 낫다
+- 변수를 반드시 재할당해야하는 경우라면 `let`을 사용한다. 
+- `let`은 재할당할 수 있다는 점에서 `var`와 유사하다. 
+- `var`는 어휘적 유효 범위를 따르는 반면, `let`은 블록 유효 범위를 따른다. 
+  - 블록 유효 범위 변수는 if 블록이나 for 반복문 같은 블록의 내부에만 존재한다. 
+  - 블록 밖에서는 블록 유효 범위 변수에 접근할 수 없다. 
+  - 즉, 변수를 선언한 중괄호를 벗어나면 변수가 존재하지 않는다 . 
+
+```js
+  function getLowestPrice(item){
+  var count = item.inventory;
+  var price = item.price;
+  if (item.salePrice){
+    var count = item.saleInventory;
+    if (count > 0){
+      price = item.salePrice;
+    }
+  }
+  if (count){
+    return price;
+  }
+
+  return 0;
+}
+```
+
+- 변수를 같은 이름의 변수에 재할당한 것이 문제
+- `let` 은 블록 유효 범위를 따르므로 블록 내부에 선언한 변수는 블록 외부에 존재하지 않는다. 
+```js
+function getLowestPrice(item){
+  let count = item.inventory;
+  let price = item.price;
+  if (item.salePrice){
+    let count = item.saleInventory;
+    if (count > 0){
+      price = item.salePrice;
+    }
+  }
+  if (count){
+    return price;
+  }
+
+  return 0;
+}
+```
+- 변수 count를 선언하기 위해 `if 블록` 안에서 `let`을 사용했기 때문에 함수를 시작할 때 선언한 변수 `count`와 충돌하지 않는다. 
+- `const`도 블록 유효 범위를 따른다. 
+- 변수의 값이 변경되는 경우도 있으므로 계속해서 `let`을 사용할 수도 있겠지만, 아예 다른 이름을 쓰는 편이 더 확실하다. 
+
+```js
+function getLowestPrice(item){
+  const count = item.inventory;
+  let price = item.price;
+  if (item.salePrice){
+    const saleCount = item.saleInventory;
+    if (saleCount > 0){
+      price = item.salePrice;
+    }
+  }
+  if (count){
+    return price;
+  }
+
+  return 0;
+}
+```
+
+- `let`과 `const`는 새로운 보호 방법을 가지고 있다. 
+- `let`과 `const`는 같은 이름의 변수를 다시 선언할 수 없다. 
+- `var`를 사용하는 경우에는 같은 유효 범위에서 같은 이름의 변수를 다시 선언할 수도 있다. 
+
+```js
+function getLowestPriceDeclareation(item){
+  const count = item.inventory;
+  let price = item.price;
+  if (!count){
+    return 0;
+  }
+  // ...
+  let price = item.saleInventory ? item.salePrice : item.wholesalePrice;
+  return price;
+}
+```
+
 
