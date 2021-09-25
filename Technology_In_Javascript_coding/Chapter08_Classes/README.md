@@ -323,3 +323,114 @@ const coupon = new Coupon(5);
 
 
 - 게터와 세터가 가져다주는 큰 이점은 복잡도를 숨길 수 있다는 점이다. 
+
+
+<br>
+
+***
+<br><br>
+
+## TIP 41 : 제너레이터로 이터러블 속성을 생성하라🔍
+👉 제너레이터를 이용해 복잡한 데이터 구조를 이터러블로 변환하는 방법
+- 이터러블은 데이터를 다룰 때 개별 데이터에 접근할 수 있도록 해서 좀 더 많은 유연성을 제공한다. 
+- 객체는 직접적으로 순회할 수 없다. 
+- 제너레이터라는 새롭고 특별한 함수를 이용하면 데이터를 한 번에 하나씩 반환할 수 있다. 
+- 제너레이터란 제너레이터를 함수가 호출되었을 때 그 즉시 끝까지 실행하지 않고 중간에 빠져나갔다가 다시 돌아올 수 있는 함수 
+- 제너레이터는 함수 몸체의 실행을 즉시 끝내지 않는 하나의 함수이다. 
+- 다음 단계 전까지 기본적으로 일시 정지하는 중단점이 있는 함수이다. 
+
+<br>
+
+- 제너레이터를 생성하려면 `function` 키워드 뒤에 `별표(*)`를 추가한다. 
+- 함수의 일부를 반환하는 `next()`라는 특별한 메서드에 접근할 수 있다. 
+- 함수 몸체 안에서는 `yield` 키워드를 이용해 정보를 반환한다. 
+- 함수를 실행할때는 `next()` 메서드를 이용해서 함수가 내보낸 정보를 가져올 수 있다.
+- `next()`를 호출하면 두 개의 키 `value`와 `done`이 있는 객체를 가져온다. 
+- `yield`로 선언한 항목이 `value`이다. 
+- `done`은 남은 항목이 없다는 것을 알려준다. 
+
+<br>
+- 3부작 제너레이터를 사용하려면 먼저 함수를 호출하고 결과를 변수에 할당해야 한다. 
+- 변수에 새로운 책이 필요할 때마다 `next()`를 호출한다. 
+```js
+function* getCairoTrilogy(){
+  yield '궁전 샛길';
+  yield '욕망의 궁전';
+  yield '설탕 거리';
+}
+
+const trilogy = getCairoTrilogy();
+trilogy.next();
+// {value: '궁전 샛길', done: false}
+trilogy.next();
+// {value: '욕망의 궁전', done: false}
+trilogy.next();
+// {value: '설탕 거리', done: false}
+trilogy.next();
+// {value: undefined, done: true}
+```
+- 함수를 단계별로 조각조각 실행할 수 있다. 
+- 정보가 매우 많고 일부만 접근해야 할 때 유용하다
+- 정보의 일부만 꺼내고 다음 조각을 다른 곳에서 사용하기 위해 제너레이터를 전달해줄 수도 있다. 
+- 고차 함수의 경우처럼 다른 곳에 사용할 수 있다. 
+
+<br>
+
+- 제너레이터가 함수를 이터러블로 바꿔준다. 
+  - 데이터를 한 번에 하나씩 접근하기 때문에 쉽게 이터러블을 만들 수 있다. 
+  - 제너레이터는 배열의 인덱스나 맵의 키를 다루는 것처럼 각 항목을 한 번에 하나씩 거쳐간다. 
+
+```js
+[...getCairoTrilogy()];
+// ['궁전 샛길', '욕망의 궁전', '설탕 거리']
+
+const readingList = {
+  '깡패단의 방문': true,
+  '맨해튼 비치': false,
+};
+for (const book of getCairoTrilogy()){
+  readingList[book] = false;
+}
+readingList;
+// {
+//   '깡패단의 방문': true,
+//   '맨해튼 비치': false,
+//   '궁전 샛길': false,
+//   '욕망의 궁전': false,
+//   '설탕 거리': false
+// }
+```
+- 제너레이터는 게터와 세터처럼 클래스에 단순한 인터페이스를 제공할 수 있다.
+
+- 트리 데이터 구조는 검색하고 조회하는 데는 이점이 있지만, 정보를 평면화하기가 꽤 어렵다. 
+- 제너레이터를 사용하면 배열에 담지 않고 데이터를 바로 반환할 수 있다. 
+```js
+class FamilyTree{
+  constructor(){
+    this.family = {
+      name: 'Doris',
+      child: {
+        name: 'Martha',
+        child: {
+          name: 'Dyan',
+          child:{
+            name: 'Bea',
+          },
+        },
+      },
+    };
+  }
+  * [Symbol.iterator](){
+    let node = this.family;
+    while (node){
+      family.push(node.name);
+      node = node.child;
+    } 
+  }
+}
+const family = new FamilyTree();
+[...family];
+// ['Doris', 'Martha', 'Dyan', 'Bea' ];
+```
+- 제너레이터를 사용할 때의 이점은 다른 개발자들이 클래스의 세부 구현 내용을 알 필요가 없다는 것이다. 
+
