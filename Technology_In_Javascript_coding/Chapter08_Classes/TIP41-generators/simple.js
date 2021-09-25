@@ -13,3 +13,22 @@ trilogy.next();
 // {value: '설탕 거리', done: false}
 trilogy.next();
 // {value: undefined, done: true}
+
+[...getCairoTrilogy()];
+// ['궁전 샛길', '욕망의 궁전', '설탕 거리']
+
+const readingList = {
+  '깡패단의 방문': true,
+  '맨해튼 비치': false,
+};
+for (const book of getCairoTrilogy()){
+  readingList[book] = false;
+}
+readingList;
+// {
+//   '깡패단의 방문': true,
+//   '맨해튼 비치': false,
+//   '궁전 샛길': false,
+//   '욕망의 궁전': false,
+//   '설탕 거리': false
+// }
