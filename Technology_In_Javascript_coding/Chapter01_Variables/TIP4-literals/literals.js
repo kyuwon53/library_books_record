@@ -15,3 +15,7 @@ function leapYearConverter(age){
 }
 leapYearConverter(34);
 // "윤년에 태어났다면 8살이야."
+
+function generateLink(image, width){
+  return `https://${getProvider()}/${image}?width=${parseInt(width,10)}`;
+}
