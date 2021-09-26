@@ -11,5 +11,5 @@ getUserPreferences()
   .then(preferences =>{
     console.log(preferences.theme);
   });
-//'dusk'
+  // 'dusk'
 
