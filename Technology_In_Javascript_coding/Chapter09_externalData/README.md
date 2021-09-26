@@ -198,3 +198,72 @@ getUserPreferences()
 - 프라미스가 담긴 배열을 받아 모든 프라미스가 종료되었을 때의 성공 또는 실패 결과를 반환하는 `Promise.all`이라는 메서드도 있다. 
 - 프라미스는 너저분하게 작성되고 말았을 코드를 멋지고 읽기 좋게 만들 수 있는 훌륭한 도구이다. 
 
+<br>
+
+***
+<br><br>
+
+## TIP 44 : async/await로 함수를 명료하게 생성하라 🔍
+👉 async/await를 이용해 프라미스를 효율적으로 처리하는 방법을 살펴보자 
+
+- 프라미스는 콜백과 비교하면 엄청난 발전이지만 인터페이스가 여전히 다소 투박하다. 
+- 프라미스를 사용해도 여전히 메서드에서 콜백을 다뤄야 한다. 
+
+<br>
+
+- `async` 키워드를 이용해서 선언한 함수는 비동기 데이터를 사용한다는 것을 의미한다. 
+- 비동기 함수의 내부에서 `await` 키워드를 사용하면 값이 반환될 때까지 함수의 실행을 중지시킬 수 있다. 
+
+1. `async/await`가 프라미스를 대체하지는 않는다.
+  - 단지 프라미스를 더 나은 문법으로 감싸는 것에 불과하다. 
+2. 현재는 브라우저 지원이 충분하지 않고 컴파일을 거쳐서 사용하는 경우에는 약간의 버그가 있다. 
+  - 서버 측 자바스크립트에 사용할 때는 안전하지만, 브라우저에서 사용할 때는 문제가 발생할 수 있다.
+
+```js
+async function getTheme() {
+const {theme}  = await getUserPreferences();
+return theme;
+}
+
+getTheme()
+.then(theme => {
+  console.log(theme);
+});
+```
+- `getTheme()` 함수 내부에서 `getUserPreferences()`를 호출할 수 있다. 
+- 함수를 호출하기 전에 `await` 키워드를 추가해서 `getUserPreferences()`가 프라미스를 반환한다는 것을 알려줘야 한다. 
+- 이렇게 하면 프라미스가 완료되었을 때 반환되는 값이 새로운 변수에 담긴다. 
+
+- 비동기 함수의 재미있는 점은 프라미스로 변환된다는 것이다. 
+  - 즉, `getTheme()`를 호출해도 여전히 `then()` 메서드가 필요하다. 
+
+- 여러 개의 프라미스를 연결했을 때, `async/await`를 이용하면, 개별 프라미스에서 반환된 값을 변수에 먼저 할당하고 다음에 이어질 함수로 전달할 수 있다.
+- 즉, 연결된 프라미스를 하나의 함수로 감싸진 여러 개의 함수 호출로 변환할 수 있다. 
+
+```js
+async function getArtistByPreference() {
+  const { theme } = await getUserPreferences();
+  const { album } = await getMusic(theme);
+  const { artist } = await getArtist(album);
+  return artist;
+}
+
+getArtistByPreference()
+  .then(artist => {
+    console.log(artist);
+  });
+```
+```js
+getArtistByPreference()
+  .then(artist => {
+    console.log(artist);
+  })
+  .catch(e => {
+    console.error(e);
+  });
+```
+- 오류 퍼리는 비동기 호출을 감싼 함수의 밖으로 옮겨야 한다. 
+- `getArtistByPreference()`를 실행할 때 `catch()` 메서드를 사용한다. 
+- `getArtistByPreference()`를 실행하면 프라미스를 반환하므로, 내부의 비동기 함수가 오류를 일으킬 때를 대비해서 `catch()` 메서드를 추가하는 것이다. 
+- 프라미스는 여러 상황에서 사용하는데, 가장 흔한 것은 API에서 데이터를 가져오는 경우이다. 
+
