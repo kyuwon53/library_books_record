@@ -18,4 +18,7 @@ async function getArtistByPreference() {
 getArtistByPreference()
   .then(artist => {
     console.log(artist);
+  })
+  .catch(e => {
+    console.error(e);
   });
