@@ -34,3 +34,10 @@ function getMusic(theme, cb){
     });
   }, 1000);
 }
+
+getUserPreferences(preferences => {
+  return getMusic(preferences.theme, music => {
+    console.log(music.album);
+  });
+});
+
