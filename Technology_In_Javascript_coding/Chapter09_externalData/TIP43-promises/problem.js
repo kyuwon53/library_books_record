@@ -21,3 +21,16 @@ log('ending?');
 // ending?
 
 // DUSK
+
+function getMusic(theme, cb){
+  return setTimeout(() => {
+    if (theme === 'dusk'){
+      return cb({
+        album: 'music for airports',
+      });
+    }
+    return cb({
+      album: 'kind of blue',
+    });
+  }, 1000);
+}
