@@ -36,3 +36,7 @@ getUserPreferences()
     console.log(music.album);
   });
 // music for airports
+
+getUserPreferences()
+  .then(preference => getMusic(preference.theme))
+  .then(music => {console.log(music.album); });
