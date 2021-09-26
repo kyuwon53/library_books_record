@@ -17,3 +17,22 @@ failUserPreferences()
   });
   // 실패: 접근 거부됨 
 
+  function getMusic(theme){
+    if (theme === 'dusk') {
+      return Promise.resolve({
+        album: 'music for airports',
+      });
+    }
+    return Promise.resolve({
+      album: 'kind of blue',
+    });
+  }
+
+getUserPreferences()
+  .then(preference => {
+    return getMusic(preference.theme);
+  })
+  .then(music => {
+    console.log(music.album);
+  });
+// music for airports
