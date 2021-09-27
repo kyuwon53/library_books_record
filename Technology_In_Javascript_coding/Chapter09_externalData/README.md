@@ -390,5 +390,74 @@ then(data => {
 <br><br>
 
 ## TIP 46 : localStorage로 상태를 장기간 유지하라 🔍
-👉 `fetch()`를 이용해 원격 데이터를 가져오는 방법을 알아보자
+👉 사용자 데이터를 `localStorage`에 저장하는 방법
+
+- 사용자 데이터를 브라우저에 저장할 수 있다. 
+- 데이터를 브라우저에 저장하면 특정 기기의 특정 브라우저에 정보를 유지할 수 있다. 
+
+- **localStorage**를 이용하면 사용자 정보를 쉽게 저장할 수 있다. 
+- **localStorage**는 브라우저에만 존재하는 작은 데이터베이스와 같다. 
+- **localStorage**에 정보를 추가하거나 가져올 수 있지만, 브라우저의 자바스크립트에서 직접적으로 접근할 수는 없다. 
+
+- 데이터를 저장하려면 **localStorage** 객체에 `setItem()` 메서드를 사용해서 값을 설정하면 된다. 
+- 첫번째 인수에는 키, 두 번째 인수에는 값을 전달한다. 
+
+```js
+function saveBreed(breed) {
+  localStorage.setItem('breed', breed)
+}
+
+function getSavedBreed() {
+  return localStorage.getItem('breed');
+}
+
+function removeBreed() {
+  return localStorage.removeItem('breed');
+}
+```
+- 사용자가 페이지를 떠났다가 다시 방문할 때는 비슷한 명령으로 데이터를 가져올 수 있다. 
+- 추가했던 항목을 삭제할 수도 있다. 
+
+- **localStorage**를 사용하면 사용자에게 추가적인 노력을 요구하지 않고도 사용자 정보를 저장할 수 있다. 
+- 즉, 페이지를 떠났다가 다시 돌아오거나 새로 고침을 하더라도 이전과 동일하게 애플리케이션을 설정할 수 있다.
+
+```js
+function applyBreedPreference(filters) {
+  const breed = getSavedBreed();
+  if (breed) {
+    filters.set('breed',breed);
+  }
+  return filters;
+}
+```
+- 사용자가 설정한 모든 조건을 저장하고 싶은 경우에는 항목별로 저장할 수 있지만, 그룹으로 묶어서 저장하면 훨씬 쉽다.
+- **localStorage**의 유일한 단점은 데이터가 반드시 문자열이어야 한다는 점이다.
+- **localStorage**에 배열이나 객체는 저장할 수 없다.
+- **JSON.stringify()**를 이용해 데이터를 문자열로 변환하고, 다시 가져올 때는 **JSON.parse()**를 이용해 자바스크립트 객체로 변환하면 된다. 
+
+```js
+function savePreferences(filters) {
+  const filterString = JSON.stringify([...filters]);
+  localStorage.setItem('preferences', filterString);
+}
+```
+- 저장한 데이터를 다시 사용할 때는 **localStorage**에서 데이터를 가져와 다시 맵으로 변환하면 된다. 
+- 물론 객체나 배열을 저장하는 경우에는 문자열을 파싱하는 과정만 거치면 된다. 
+
+```js
+function retrievePreferences() {
+  const preferences = JSON.parse(localStorage.getItem('preferences'));
+  return new Map(preferences);
+}
+
+function clearPreferences() {
+  localStorage.clear();
+}
+```
+- **localStorage**를 비워야 하는 경우에는 `clear()`를 이용해서 모든 키-값 쌍을 삭제할 수 있다.
+- **sessionStorage**를 사용해도 데이터를 임시로 저장할 수 있다.
+  - 서버 측 렌더링과 클라이언트 측 기능이 혼합되어 있는 경우에 유용하다.
+  - 페이지를 새로 고침하면 저장한 데이터가 유지되고, 사용자가 페이지를 떠났다가 다시 돌아오면 저장한 데이터가 없는 기본 상태를 보여준다.
+  - 브라우저에 저장된 정보와 API 접근을 이용하면 서버를 통한 페이지 렌더링을 한 번으로 줄일 수 있다. 
+  - `fetch()`와 **localStorage**는 매우 단순하지만, 브라우저에서 강력한 소프트웨어를 만들 수 있는 무한한 가능성을 열어준다. 
 
