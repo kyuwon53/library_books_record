@@ -17,3 +17,9 @@ function applyBreedPreference(filters) {
   }
   return filters;
 }
+
+function savePreferences(filters) {
+  const filterString = JSON.stringify([...filters]);
+  localStorage.setItem('preferences', filterString);
+}
+
