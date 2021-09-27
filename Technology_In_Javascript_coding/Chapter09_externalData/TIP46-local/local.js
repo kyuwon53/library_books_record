@@ -23,3 +23,12 @@ function savePreferences(filters) {
   localStorage.setItem('preferences', filterString);
 }
 
+function retrievePreferences() {
+  const preferences = JSON.parse(localStorage.getItem('preferences'));
+  return new Map(preferences);
+}
+
+function clearPreferences() {
+  localStorage.clear();
+}
+
