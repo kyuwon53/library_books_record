@@ -267,3 +267,121 @@ getArtistByPreference()
 - `getArtistByPreference()`를 실행하면 프라미스를 반환하므로, 내부의 비동기 함수가 오류를 일으킬 때를 대비해서 `catch()` 메서드를 추가하는 것이다. 
 - 프라미스는 여러 상황에서 사용하는데, 가장 흔한 것은 API에서 데이터를 가져오는 경우이다. 
 
+<br>
+
+***
+<br><br>
+
+## TIP 45 : fetch로 간단한 AJAX 호출을 처리하라🔍
+👉 `fetch()`를 이용해 원격 데이터를 가져오는 방법을 알아보자
+
+- API를 사용하면 현재 정보를 가져올 수 있고, 화면을 새로 고침하지 않고도 단일 요소를 갱신할 수 있다. 
+- API를 이용하면 네이티브 소프트웨어처럼 작동하는 매우 빠른 애플리케이션을 만들어낼 수 있다. 
+- AJAX 호출을 처리할 수 있는 `fetch()`라는 훨씬 간단한 도구가 생겼다. 
+- `fetch()` 명세는 **WHATWG(Web Hypertext Application Technology Working Group)**가 정의한다. 
+  - 따라서 대부분의 최신 브라우저에서 지원되지만 Node.js에서는 기본적으로 지원되지 않는다. 
+
+<br>
+
+- 먼저 `fetch()`를 사용하려면 API 끝점(endpoint)이 필요하다. 
+- API 끝점이 준비되었으니 여기에 요청을 보낸다. 
+  1. 첫번째로 처리해볼 요청은 간단한 GET 요청이다. 
+    - 데이터를 가져오는 것만 처리한다면 `fetch()` 호출은 간단하다. 
+    - 끝점 URL을 인수로 해서 `fetch()`를 호출하면 된다.
+    ```js
+    fetch('https://jsonplaceholder.typicode.com/posts/1');
+    // {
+    //   userId: 1,
+    //   id: 1,
+    //   title: 'First Post',
+    //   body: 'This is my first post...',
+    // }
+    ```
+  - 요청을 보내고 나면 `fetch()`는 응답을 처리하는 프라미스를 반환한다. 
+  - 이어서 해야 할 작업은 `then()` 메서드에 응답을 처리하는 콜백 함수를 추가하는 것이다. 
+  - 결국 우리가 필요한 것은 응답 본문이다. 
+  - 응답 객체는 본문 외에도 상태 코드, 헤더 등 상당한 정보를 가지고 있다. 
+  - `fetch()`는 다양한 믹스인을 포함하고 있어서 응답 본문 데이터를 자동으로 변환해줍니다.
+  - 이 경우에는 JSON을 가져온다는 사실을 알고 있으므로 응답에 `json()`을 호출해 JSON으로 변환할 수 있다. 
+  - `json()` 메서드도 프라미스를 반환하기 때문에 `then()` 메서드를 추가해야 한다. 
+  - 추가한 `then()` 메서드의 콜백에서 파싱된 데이터를 처리할 수 있다. 
+
+```js
+fetch('https://jsonplaceholder.typicode.com/posts/1')
+  .then(data => {
+    return data.json();
+  })
+  .then(post => {
+    console.log(post.title);
+  });
+```
+- `fetch()` 프라미스는 상태 코드가 **404**여서 요청에 실패한 경우에도 응답 본문을 반환한다. 
+- 즉, 요청이 실패하는 경우 `catch()` 메서드만으로 처리할 수 없다. 
+- 응답에는 응답 코드가 200에서 299 사이인 경우 **true**로 설정되는 `ok`라는 필드가 있다. 
+  - 이 필드를 이용해서 응답을 확인하고, 문제가 있으면 오류 처리로 넘어가도록 할 수 있다. 
+  - 아쉬운 점은 `ok` 필드를 인터넷 익스플로러는 지원 하지 않고, 엣지만 지원한다는 점이다. 
+  - 인터넷 익스플로러를 지원해야하는 경우에는 `response.status`를 이용해 200에서 299 사이의 값인지 확인
+
+```js
+fetch('https://jsonplaceholder.typicode.com/pots/1')
+  .then(data => {
+    if (!data.ok){
+      throw Error(data.status);
+    }
+    return data.json();
+  })
+  .then(post => {
+    console.log(post.title);
+  })
+  .catch(e => {
+    console.log(e);
+  });
+```
+- GET 요청 외의 다른 요청을 처리할 때는 몇가지 조건을 추가로 설정해야 한다. 
+- 두 번째 인수로 설정 조건을 담은 객체를 전달해야 한다. 
+- 설정 객체는 서로 다른 다양한 세부 사항을 담을 수 있다. 
+- **POST** 요청을 보내기 때문에 **POST** 메서드를 사용한다고 선언해야 한다. 
+- JSON 데이터를 보내기 때문에 헤더의 **Content-Type**을 `application/json`으로 설정해야 한다.
+- 끝으로 **JSON** 데이터를 담은 문자열로 요청 본문을 추가하낟. 
+
+```js
+const update = {
+  title: 'Clarence White Techniques',
+  body: 'Amazing',
+  userId: 1,
+};
+
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(update),
+};
+
+fetch('https://jsonplaceholder.typicode.com/posts',options).
+then(data => {
+  if (!data.ok) {
+    throw Error(data.status);
+  }
+  return data.json();
+}).then(update => {
+  console.log(update);
+  // {
+  //   title: 'Clarence White Techniques',
+  //   body: 'Amazing',
+  //   userId: 1,
+  //   id: 101
+  // };
+}).catch(e => {
+  console.log(e);
+});
+```
+- 요청 본문의 형식으로는 **JSON** 데이터가 가장 흔하지만 **FormData**와 같은 다른 방식도 있다.
+- 요청을 필요에 따라 조정할 수 있는 다양한 방법이 있으며 **모드(mode)**, **캐시 방법** 등을 설정할 수 있다. 
+- 끝으로 코드를 작성할 때는 **AJAX** 요청을 어디서 다룰지, 그 위치에 주의하라
+- `fetch()`는 대부분의 경우 인터넷 연결이 필요하고 API 끝점이 프로젝트 진행 중에 바뀔수 있다는 점도 놓치지 말아야 한다. 
+- `fetch()` 작업을 한곳에 모아두는 것도 좋은 방법이다. 
+  - 이렇게 하면 수정과 테스트가 쉬워진다. 
+
+
