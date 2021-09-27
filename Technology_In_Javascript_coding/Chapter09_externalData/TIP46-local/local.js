@@ -9,3 +9,11 @@ function getSavedBreed() {
 function removeBreed() {
   return localStorage.removeItem('breed');
 }
+
+function applyBreedPreference(filters) {
+  const breed = getSavedBreed();
+  if (breed) {
+    filters.set('breed',breed);
+  }
+  return filters;
+}
