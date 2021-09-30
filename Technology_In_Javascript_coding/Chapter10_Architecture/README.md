@@ -346,5 +346,52 @@ export default class Address {
 - 컴포넌트 아키텍처가 동작하는 유일한 이유는 코드를 영리하게 결합하는 훌륭한 도구가 있기 때문이다. 
 
 
+<br>
+
+***
+<br><br>
+
+## TIP 50 : 빌드 도구를 이용해 컴포넌트를 결합하라 🔍
+👉 자바스크립트 코드와 자산을 빌드 도구를 이용해 컴파일하는 방법
+
+- 컴포넌트 아키텍처는 브라우저의 내장 기능만으로 지원되지 않는 문제가 있다. 
+- 빌드 도구는 다루기 힘들고, 최신 경향과 도구를 계속해서 따라가기가 어려울 수 있다. 
+- 빌드 도구는 단지 코드를 한 번에 하나씩 처리하는 방법일 뿐이다. 
+```js
+import React from 'react';
+
+import Copyright from './components/Copyright/Copyright';
+
+export default function App() {
+  return (
+    <div className="main">
+      <footer>
+        <Copyright />
+      </footer>
+    </div>
+  );
+}
+```
+
+```js
+import React from 'react';
+
+export default function CopyrightStatement() {
+  const year = new Date().getFullYear();
+  return (
+    <div className="copyright">
+      Copyright {year}
+    </div>
+  );
+}
+```
+- 축약된 `Copyright` 컴포넌트 
+- 단순하지만 브라우저에서 바로 실행할 수는 없다. 
+- **바벨(Babel)**이라는 환상적인 도구를 사용하면 최신 자바스크립트를 브라우저에서 실행 가능한 코드로 변환할 수 있다. 
+- 바벨은 최신 자바스크립트를 다루는 데 필요한 가장 중요한 도구이다. 
+
+```js
+{ "presets": ["@babel/preset-env", "@babel/preset-react"] }
+```
 
 
