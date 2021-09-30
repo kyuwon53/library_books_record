@@ -228,5 +228,89 @@ export default class Address {
 }
 ```
 
+<br>
+
+***
+<br><br>
+
+## TIP 48 : npm으로 커뮤니티 코드를 끌어와라 🔍
+👉 npm을 이용해 외부 코드를 가져오는 방법
+
+- 라이브러리 코드를 여러분의 프로젝트에 직접 내려받고, 버전을 관리하고, 익숙한 규칙에 따라 개별 파일에서 코드를 가져와 사용할 수 있다. 
+- npm(node package manager)(Node 패키지 관리자)이라는 도구를 이용해 작업을 할 수 있다. 
+- 페이스북이 만든 yarn처럼 npm을 대체할 수 있는 도구도 있다. 
+
+<br>
+
+- npm은 중요한 프로젝트이며 대부분 코드를 가져오기 위해 사용한다. 
+- npm을 이용해서 프로젝트의 메타데이터와 구성 정보를 설정하고, 명령줄 스크립트를 실행하고, 다른 사람들이 쓸 수 있도록 프로젝트를 게시할 수도 있다. 
+- npm을 사용하려면 Node.js를 설치해야 한다. 
+- Node.js와 npm을 설치한 후에는 프로젝트를 초기화해야 한다. 
+  - 터미널을 열고 프로젝트 디렉터리의 가장 상위로 이동한 후 npm init을 실행한다. 
+    - 이 명령은 package.json 파일의 생성을 도와주는 구성 도구를 실행한다. 
+    - package.json 파일에는 이름, 설명, 라이선스 등과 같은 프로젝트의 메타데이터 정보뿐 아니라, 모든 외부 의존성 코드도 포함되어 있다. 
+    - `npm init` 명령은 단지 package.json 파일만 생성한다. 
+```json
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specifiied\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+```
+- 이 파일은 대규모 자바스크립트 애플리케이션의 가장 중요한 진입점
+- 외부 의존성에 대한 정보를 저장하는 곳이다. 
+
+<br>
+
+- 코드를 가져와서 쓸 만큼 만족스럽다면 `npm install --save lodash` 명령을 실행해 프로젝트에 설치한다. 
+
+- `npm install` 명령은 몇 가지 작업을 수행한다. 
+  1. 프로젝트에 `node_modules` 디렉토리가 없는 경우에는 디렉터리를 생성하고 패키지를 내려받는다.
+  2. 설치하는 패키지의 버전 번호로 `package.json` 파일을 갱신한다. 
+  3. 설치하는 코드의 버전에 대한 세부 정보를 담은 `package-lock.json` 파일을 생성한다. 
+  - `package-lock.json` 파일에는 해당 코드가 필요로 하는 다른 라이브러리에 대한 정보도 담겨 있다. 
+
+```json
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specifiied\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4. 17. 15"
+  }
+}
+```
+- 갱신된 `package.json`, `dependencies` 필드 추가 
+
+<br>
+
+- 프로젝트의 어느 곳에서든 동일한 문법으로 코드를 가져올 수 있다는 점이 좋다. 
+- 코드를 읽을 때 어떤 함수가 코드베이스 외부에서 가져온 것인지 쉽게 확인할 수 있다. 
+- 상대 경로를 사용하지 않고 불러온 코드는 외부 코드이다. 
+- npm을 이용하면 개발 의존성을 다루고 실행할 수 있는 깔끔한 인터페이스를 제공한다. 
+  - 예를 들어 프로젝트에 `Prettier`를 추가한다고 하자.
+  - `Prettier`는 스타일 가이드에 맞게 코드 서식을 수정해주는 도구이다. 
+  - 이 도구는 개발 작업에는 필요하지만, 실환경 코드에 필요한 의존성은 아니다. 
+  - 실환경에 필요하지 않은 의존성이므로 `npm install --save-dev prettier`로 설치한다. 
+  - `--save-dev` 플래그를 사용해도 `package.json` 파일을 갱신하지만, `--save` 플래그를 사용한 경우와는 의존성을 추가하는 필드가 다르다. 
+
+<br>
+
+- `prettier`는 `node_modules` 디렉토리에 설치되었기 때문에 명령줄에서 직접 접근할 수 없다. 
+- `prettier --tab width=4 --write ./code/*.js` 명령을 실행해 탭 간격을 공백 네 칸으로 변환할 수 있다. 
+- npm 스크립트는 동일한 명령을 실행할 때 node_modules 디렉토리에 설치한 패키지를 실행한다. 
+- `package.json` 파일이 있는 디렉토리에서 `npm run clean`을 실행하면 프로젝트에 설치한 `Prettier` 패키지를 npm이 실행해준다. 
 
 
