@@ -7,8 +7,8 @@
 |[이것이 취업을 위한 코딩 테스트다 with 파이썬](http://www.yes24.com/Product/Goods/91433923?OzSrank=1) |[코어 자바스크립트](http://www.yes24.com/Product/Goods/78586788)|[Do it! 자료구조와 함께 배우는 알고리즘 입문 자바 편](http://www.yes24.com/Product/Goods/60547893?OzSrank=3)| 
 | :---: | :---: | :---: |
 |![이것이 취업을 위한 코딩 테스트다 with 파이썬](http://image.yes24.com/goods/91433923/L)|![코어 자바스크립트](http://image.yes24.com/goods/78586788/L)|![Do it! 자료구조와 함께 배우는 알고리즘 입문 자바 편](http://image.yes24.com/goods/60547893/L)|
-|[Node.js 교과서](http://www.yes24.com/Product/Goods/91213376)|
-|![Node.js 교과서](http://image.yes24.com/goods/91213376/L)|
+|[Node.js 교과서](http://www.yes24.com/Product/Goods/91213376)|[그림으로 배우는 HTTP & Network](http://www.yes24.com/Product/Goods/15894097?OzSrank=2)
+|![Node.js 교과서](http://image.yes24.com/goods/91213376/L)|![그림으로 배우는 HTTP & Network](http://image.yes24.com/momo/TopCate448/MidCate010/44791452.jpg)
 
 ## ⭐ 읽은 책 ⭐
 |[Do it! 오라클로 배우는 데이터베이스 입문](http://www.yes24.com/Product/Goods/65849798)|[Do it! HTML+CSS+자바스크립트 웹 표준의 정석](http://www.yes24.com/Product/Goods/96674934)|[모두의 SQL](http://www.yes24.com/Product/Goods/64434562?OzSrank=1)|
