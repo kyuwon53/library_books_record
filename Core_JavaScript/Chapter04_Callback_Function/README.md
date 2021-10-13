@@ -284,7 +284,140 @@ setTimeout(obj1.func.bind(obj2), 1500);
 - ES6에서는 `Promise`, `Generator` 등이 도입
 - ES2017에서는 `async/await`가 도입 
 
+<br>
 
+- 비동기 작업의 동기적 표현 1 - Promise(1)
 
+```js
+new Promise(function (resolve) {
+  setTimeout(function () {
+    var new = '에스프레소';
+    console.log(name);
+    resolve(name);
+  }, 500);
+}).then(function (prevName) {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      var name = prevName + ', 아메리카노';
+      console.log(name);
+      resolve(name);
+    }, 500);
+  });
+}).then(function (prevName) {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      var name = prevName + ', 카페모카';
+      console.log(name);
+      resolve(name);
+    }, 500);
+  });
+}).then(function (prevName){
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      var name = prevName + ', 카페라떼';
+      console.log(name);
+      resolve(name);
+    }, 500);
+  });
+});
+```
+
+- ES6의 Promise를 이용한 방식 
+- new 연산자와 함께 호출한 `Promise`의 인자로 넘겨주는 콜백 함수는 호출할 때 바로 실행되지만 그 내부에 `resolve` 또는 `reject` 함수를 호출하는 구문이 있을 경우 둘 중 하나가 실행되기 전까지는 다음(then) 또는 오류 구문(catch)으로 넘어가지 않는다. 
+- 비동기 작업이 완료될 때 비로소 `resolve` 또는 `reject`를 호출하는 방법으로 비동기 작업의 동기적 표현이 가능하다. 
+
+<br>
+
+- 비동기 작업의 동기적 표현 2 - Promise(2)
+
+```js
+var addCoffee = function (name) {
+  return function (prevName) {
+    return new Promise(function (resolve) {
+      setTimeout(function () {
+        var newName = prevName ? (prevName + ', ' + name) : name;
+        console.log(newName);
+        resolve(newName);
+      }, 500);
+    });
+  };
+};
+addCoffee('에스프레소')()
+  .then(addCoffee('아메리카노'))
+  .then(addCoffee('카페모카'))
+  .then(addCoffee('카페라떼'));
+```
+
+<br>
+
+- 비동기 작업의 동기적 표현 (3) - Generator
+
+```js
+var addCoffee = function (prevName, name) {
+  setTimeout(function () {
+    coffeeMaker.next(prevName ? prevName + ', ' + name : name);
+  }, 500);
+};
+var coffeeGenerator = function* () {
+  var espresso = yield addCoffee('', '에스프레소');
+  console.log(espresso);
+  var americano = yield addCoffee(espresso, '아메리카노');
+  console.log(americano);
+  var mocha = yield addCoffee(americano, '카페모카');
+  console.log(mocha);
+  var latte = yield.addCoffee(mocha, '카페라떼');
+  console.log(latte);
+};
+var coffeeMaker = coffeeGenerator();
+coffeeMaker.next();
+```
+- ES6 Generator 이용
+- 6번째 줄의 '*' 붙은 함수가 바로 `Generator` 함수이다. 
+- `Generator` 함수를 실행하면 `Iterator`가 반환되는데, `Iterator`는 `next`라는 메서드를 가지고 있다. 
+- next 메서드를 호출하면 `Generator` 함수 내부에서 가장 먼저 등장하는 `yield`에서 함수의 실행을 멈춥니다. 
+- 이후 다시 `next` 메서드를 호출하면 앞서 멈췄던 부분부터 시작해서 그다음에 등장하는 `yield`에서 함수의 실행을 멈춥니다. 
+- 비동기 작업이 완료되는 시점마다 `next` 메서드를 호출해준다면 `Generator` 함수 내부의 소스가 위에서부터 아래로 순차적으로 진행된다. 
+
+```js
+var addCoffee = function (name) {
+  return new Promise(function (resolve) {
+    setTimeout(function () {
+      resolve(name);
+    }, 500);
+  });
+};
+var coffeeMaker = async function () {
+  var coffeeList = '';
+  var _addCoffee = async function (name) {
+    coffeeList += (coffeeList ? ',' : '') + await addCoffee(name);
+  };
+  await _addCoffee('에스프레소');
+  console.log(coffeeList);
+  await _addCoffee('아메리카노');
+  console.log(coffeeList);
+  await _addCoffee('카페모카');
+  console.log(coffeeList);
+  await _addCoffee('카페라떼');
+  console.log(coffeeList);
+};
+coffeeMaker();
+```
+- 비동기 작업을 수행하고자 하는 함수 앞에 async를 표기하고, 함수 내부에서 실질적인 비동기 작업이 필요한 위치마다 `await`를 표기하는 것만으로 뒤의 내용을 `Promise`로 자동 전환하고, 해당 내용이 `resolve`된 이후에야 다음으로 진행한다. 
+- 즉 `Promise`의 `then`과 흡사한 효과를 얻을 수 있다. 
+
+<br>
+
+***
+
+<br>
+
+## 🔎 06 정리
+- 콜백 함수는 다른 코드에 인자로 넘겨줌으로써 그 제어권도 함께 위임한 함수이다. 
+- 제어권을 넘겨받은 코드는 다음과 같은 제어권을 가진다. 
+  1. 콜백 함수를 호출하는 시점을 스스로 판단해서 실행한다. 
+  2. 콜백 함수를 호출할 때 인자로 넘겨줄 값들 및 그 순서가 정해져 있다. 이 순서를 따르지 않고 코드를 작성하면 엉뚱한 결과를 얻게 된다. 
+  3. 콜백 함수의 this가 무엇을 바라보도록 할지가 정해져 있는 경우도 있다. 정하지 않은 경우에는 전역객체를 바라본다. 사용자 임의로 this를 바꾸고 싶을 경우 bind 메서드를 활용하면 된다. 
+- 어떤 함수에 인자로 메서드를 전달하더라도 이는 결국 함수로서 실행된다. 
+- 비동기 제어를 위해 콜백 함수를 사용하다 보면 콜백 지옥에 빠지기 쉽다. 최근에 Promise, Generator, async/await 등 콜백 지옥에서 벗어날 수 있는 훌륭한 방법들이 속속 등장하고 잇다.
 
 
