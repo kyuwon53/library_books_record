@@ -303,8 +303,73 @@ Object.freeze(Square.prototype);
 
 #### 클래스 상속 및 추상화 방법 - 완성본(1) - 인스턴스 생성 후 프로퍼티 제거
 
+```js
+var extendClass1 = function (SuperClass, SubClass, subMethods) {
+  SubClass.prototype = new SuperClass();
+  for (var prop in SubClass.prototype) {
+    if (SubClass.prototype.hasOwnProperty(prop)) {
+      delete SubClass.prototype[prop];
+    }
+  }
+  SubClass.prototype.consturctor = SubClass;
+  if (subMethods) {
+    for( var method in subMethods) {
+      SubClass.prototype[method] = subMethods[method];
+    }
+  }
+  Object.freeze(SubClass.prototype);
+  return SubClass;
+};
+```
+<br>
 
+#### 클래스 상속 및 추상화 방법 - 완성본(2) - 빈 함수를 활용
+```js
+var extendClass2 = (function () {
+  var Bridge = function () {};
+  return function (SuperClass, SubClass, subMethods){
+    Bridge.prototype = SuperClass.prototype;
+    SubClass.prototype = new Bridge()  ;
+    SubClass.prototype.consturctor = SubClass;
+    if (subMethods) {
+      for( var method in subMethods) {
+        SubClass.prototype[method] = subMethods[method];
+      }
+    }
+    Object.freeze(SubClass.prototype);
+    return SubClass;
+  };
+})();
+```
 
+<br>
 
+#### 클래스 상속 및 추상화 방법 - 완성본(3) - Object.create 활용
+```js
+var extendClass3 = function (SuperClass, SubClass, subMethods){
+  SubClass.prototype = Object.create(SuperClass.prototype);
+  SubClass.prototype.consturctor = SubClass;
+  if (subMethods) {
+    for(var method in subMethods) {
+      SubClass.prototype[method] = subMethods[method];
+    }
+  }
+  Object.freeze(SubClass.prototype);
+  return SubClass;
+};
+```
+
+<br>
+
+### 🎈 3-4 상위 클래스에의 접근 수단 제공
+
+<br>
+
+- 하위 클래스의 메서드에서 상위 클래스의 메서드 실행 결과를 바탕으로 추가적인 작업을 수행하고 싶을 때가 있다. 
+- 이럴 때 매번 `"SuperClass.prototype.method.apply(this, argument)"`로 해결하는 것은 상당히 번거롭고 가독성이 떨어지는 방식
+- 하위 클래스에서 상위 클래스의 프로토타입 메서드에 접근하기 위한 별도의 수단이 있다면 편리 할 것이다. 
+- 이런 별도의 수단, 즉 다른 객체지향 언어들의 클래스 문법 중 하나인 `super`를 흉 내보자
+
+#### 상위 클래스 접근 수단인 super 메서드 추가 
 
 
