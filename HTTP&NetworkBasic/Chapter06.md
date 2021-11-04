@@ -870,4 +870,137 @@
 - WWW-Authenticate 헤더 필드는 상태 코드 `401 Unauthorized` 리스폰스에 반드시 포함된다. 
 - 이 예에서 "realm"는 Request-URI에 지정된 보호되었던 리소스를 식별하기 위한 문자열이다. 
 
+<br>
+
+### 📍 6. 엔티티 헤더 필드
+
+<br>
+
+- 엔티티 헤더 필드는 리퀘스트 메시지와 리스폰스 메시지에 포함된 엔티티에 사용되는 헤더로 콘텐츠의 갱신 시간 같은 엔티티에 관한 정보를 포함한다. 
+
+<br>
+
+#### 📎 6-1 Allow
+
+<br>
+
+> Allow: GET, HEAD
+
+- Allow 헤더 필드는 Request-URI에 지정된 리소스가 제공하는 메소드의 일람을 전달한다. 
+- 서버가 받을 수 없는 메소드를 수신한 경우에는 상태 코드 `405 Method Not Allowed` 리스폰스와 함께 수신 가능한 메소드의 일람을 기술한 Allow 헤더 필드를 반환한다. 
+
+<br>
+
+#### 📎 6-2 Content-Encoding
+
+<br>
+
+> Content-Encoding: gzip
+
+- Content-Encoding 헤더 필드는 서버가 엔티티 바디에 대해서 실시한 콘텐츠 코딩 형식을 전달한다. 
+- 콘텐츠 코딩은 엔티티의 정보가 누락되지 않도록 압축할 것을 지시한다. 
+- 주로 다음의 4가지 콘텐츠 코딩 형식이 사용된다(각 형식의 설명은 Accept-Encoding 헤더 필드를 참조).
+  - Gzip
+  - Compress
+  - Deflate
+  - Identify
+
+<br>
+
+#### 📎 6-3 Content-Language
+
+<br>
+
+> Content-Language: en
+
+- Content-Language 헤더 필드는 엔티티 바디에 사용된 자연어(한국어나 영어 등)를 전달한다.
+
+<br>
+
+#### 📎 6-4 Content-Length
+
+<br>
+
+> Content-Length: 15000
+
+- Content-Length 헤더 필드는 엔티티 바디의 크기(단위는 bytes)를 전달한다. 
+- 엔티티 바디에 전송 코딩이 실시된 경우에는 Content-Length 헤더 필드는 사용해서는 안된다.
+
+<br>
+
+#### 📎 6-5 Content-Location
+
+<br>
+
+> Content-Location: http://www.hackr.jp/index-ja.html
+
+- Content-Location 헤더 필드는 메시지 바디에 대응하는 URI를 전달한다.
+- Location 헤더 필드와 달리 Content-Location은 메시지 바디로 반환된 리소스의 URI를 나타낸다.
+- 예를 들면, Accept-Language 헤더 필드를 사용한 서버 구동형 리퀘스트는 실제로 요구된 오브젝트와는 다른 페이지가 반환되었을 때, Content-Location 헤더 필드에 URI를 포함한다(http://www.hackr.jp/에 엑세스해서 되돌아온 오브젝트가 http://www.hackr.jp/index-ja.html인 경우 등입니다).
+
+<br>
+
+#### 📎 6-6 Content-MD5
+
+<br>
+
+> Content-MD5: OGFkZDUwNGVhNGY3N2MxMDlwZmQ4NTBmY2lyTY==
+
+- Content-MD5 헤더 필드는 메시지 바디가 변경되지 않고 도착했는지 확인하기 위해 MD5 알고리즘에 의해서 생성된 값을 전달한다. 
+- 메시지 바디에 MD5 알고리즘을 적용해서 얻은 128비트의 바이너리 값에 Base64 인코딩을 한 결과를 필드 값에 기록한다. 
+- HTTP 헤더에는 바이너리 값을 기록하는 것이 불가능하기 때문에 Base64로 인코딩하고 있다. 
+- 유효성을 확인하기 위해서는 수신한 클라이언트 측에서 메시지 바디에 같은 MD5 알고리즘을 실행한다. 
+- 이렇게 해서 도출한 값과 필드 값을 비교하여 메시지 바디가 올바른지 여부를 알 수가 있다. 
+- 이 방식에서는 우발적으로 콘텐츠가 변경되어 버린 사실을 알 수 있지만 악의를 가진 변조는 검출할 수 없다. 
+- 그 이유는 콘텐츠를 변조하면 Content-MD5도 재계산해서 변조하는 것이 가능하기 때문이다.
+- 클라이언트가 수신한 단계에서는 메시지 바디도 Content-MD5 헤더 필드도 변조되어 있기 때문에 발견할 방법이 없는 것이다. 
+
+<br>
+
+#### 📎 6-7 Content-Range
+
+<br>
+
+> Content-Range: bytes 5001-10000/10000
+
+- Content-Range 헤더 필드는 범위를 지정해서 일부부만을 리퀘스트하는 Range 리퀘스트에 대해서 리스폰스를 할 때에 사용된다. 
+- 리스폰스로 보낸 엔티티가 어느 부분에 해당하는가를 전달한다.
+- 필드 값에는 현재 보내고 있는 곳을 바이트로 지정한 범위와 전체 사이즈를 기록한다. 
+
+<br>
+
+#### 📎 6-8 Content-Type
+
+<br>
+
+> Content-Type: text/html; charset=UTF-8
+
+- Content-Type 헤더 필드는 엔티티 바디에 포함되는 오브젝트의 미디어 타입을 전달한다. 
+- Accept 헤더 필드와 같이, 필드 값은 "타입/서브 타입"으로 기록한다. 
+- Charset 파라미터는 "iso-8859-1"과 "eus-kr" 등의 문자섹을 지정한다.
+
+<br>
+
+#### 📎 6-9 Expries
+
+<br>
+
+> Expries: Wed, 04 Jul 2012 08:26:05 GMT
+
+- Expries 헤더 필드는 리소스의 유효 기한 날짜를 전달한다. 
+- 캐시 서버 Expries 헤더 필드를 포함한 리소스를 수신한 경우 필드 값으로 지정된 날짜까지 리스폰스의 복사본을 유지하고 리퀘스트에는 캐시로 응답한다.
+- 지정 날짜가 지난 경우에는 리퀘스트가 온 단계에서 오리진 서버에 리소스를 얻으러 간다. 
+- 오리진 서버가 캐시 서버에 캐시되는 것을 원하지 않을 경우에는 Date 헤더 필드의 필드 값과 같은 날짜로 해두는 것이 바람직하다.
+- 다만 Cache-Control 헤더 필드에 max-age 디렉티브가 지정되어 있는 경우에는 Expires 헤더 필드보다 max-age 디렉티브의 지정이 우선된다. 
+
+<br>
+
+#### 📎 6-10 Last-Modified
+
+<br>
+
+> Last-Modified: Wed, 23 May 2012 09:59:55 GMT
+
+- Last-Modified 헤더 필드는 리소스가 마지막으로 갱신되었던 날짜 정보를 전달한다. 
+- 기본적으로는 Request-URI가 지정된 리소스가 갱신되었던 날짜가 되지만, CGI 등의 스크립트로 동적인 데이터를 다룰 경우에는 그 데이터의 최종 갱신 날짜가 되는 경우도 있다. 
 
