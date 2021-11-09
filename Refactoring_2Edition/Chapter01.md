@@ -658,5 +658,86 @@ function statement(invoice, plays) {
 - 따라서 리팩터링으로 인한 성능 문제에 대해 **특별한 경우가 아니라면 일단 무시하라**.
 - 리팩터링 때문에 성능이 떨어진다면, 하던 리팩터링을 마무리하고 나서 성능을 개선하자. 
 
+<br>
+
+- `volumeCredits` 변수를 제거하는 작업의 단계를 아주 잘게 나눴다. 
+1. **반복문 쪼개기**로 변수 값을 누적시키는 부분을 분리한다.
+2. **문장 슬라이드하기**로 변수 초기화 문장을 변수 값 누적 코드 바로 앞으로 옮긴다. 
+3. **함수 추출하기**로 적립 포인트 계산 부분을 별도 함수로 추출한다. 
+4. **변수 인라인하기**로 volumeCredits 변수를 제거한다. 
+
+- 항상 단계를 이처럼 잘게 나누는 것은 아니지만, 그래도 상황이 복잡해지면 단계를 더 작게 나누는 일을 가장 먼저 한다. 
+- 특히 리팩터링 중간에 테스트가 실패하고 원인을 바로 찾지 못하면 가장 최근 커밋으로 돌아가서 테스트에 실패한 리팩터링의 단계를 더 작게 나눠 다시 시도한다. 
+- 코드가 복잡할수록 단계를 작게 나누면 작업 속도가 빨라진다. 
+
+<br>
+
+```js
+function appleSauce() {
+  let totalAmount = 0;
+  for (let perf of invoice.performances) {
+    totalAmount += amountFor(perf);
+  }
+  return totalAmount;
+}
+```
+```js
+function statement(invoice, plays) {
+  let result = `청구 내역 (고객명: ${invoice.customer})\n`;
+  for (let perf of invoice.performances) {
+    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+  }
+  let totalAmount = appleSauce();             // 함수 추출 & 임시 이름 부여
+
+  result += `총액: ${usd(totalAmount)}\n`;    
+  result += `적립 포인트: ${totalVolumeCredits()}점\n`;
+  return result;
+}
+```
+
+- `totalAmount` 변수를 인라인한 다음, 함수 이름을 더 의미 있게 고친다. 
+
+```js
+function statement(invoice, plays) {
+  let result = `청구 내역 (고객명: ${invoice.customer})\n`;
+  for (let perf of invoice.performances) {
+    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience}석)\n`;
+  }
+
+  result += `총액: ${usd(totalAmount())}\n`;    // 변수 인라인 후 함수 이름 바꾸기
+  result += `적립 포인트: ${totalVolumeCredits()}점\n`;
+  return result;
+}
+```
+```js
+function totalAmount() {
+  let totalAmount = 0;
+  for (let perf of invoice.performances) {
+    totalAmount += amountFor(perf);
+  }
+  return totalAmount;
+}
+```
+
+- 추출한 함수 안에서 쓰인 이름들도 변경
+
+```js
+function totalAmount() {
+  let result = 0;     // 변수 이름 바꾸기
+  for (let perf of invoice.performances) {
+    result += amountFor(perf);
+  }
+  return result;
+}
+function totalVolumeCredits() {
+  let result = 0;     // 변수 이름 바꾸기
+  for (let perf of invoice.performances) {
+    result += volumeCreditsFor(perf);
+  }
+  return result;
+}
+```
+
+
 
 
