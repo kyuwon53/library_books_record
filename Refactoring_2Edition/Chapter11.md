@@ -107,7 +107,7 @@ function raise(aPerson, factor) {
 
 ```js
 function baseCharge(usage) {
-  if (usage < 0>) {
+  if (usage < 0) {
     return usd(0);
   }
   const amount =
@@ -133,7 +133,7 @@ function topBand(usage) {
 
 ```js
 function baseCharge(usage) {
-  if (usage < 0>) {
+  if (usage < 0) {
     return usd(0);
   }
   const amount =
