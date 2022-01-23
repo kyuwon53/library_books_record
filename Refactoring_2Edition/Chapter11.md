@@ -165,4 +165,81 @@ function withinBand(usage, bottom, top) {
 #### 절차 
 1. 매개변수로 주어질 수 있는 값 각각에 대응하는 명시적 함수들을 생성한다. 
 
-2. 원래 함수를 호출하는 
+2. 원래 함수를 호출하는 코드들을 모두 찾아서 각 리터럴 값에 대응되는 명시적 함수를 호출하도록 수정한다. 
+
+#### 예시 
+
+```js
+aShipment.deliveryDate = deliveryDate(anOrder, true);
+
+aShipment.deliveryDate = deliveryDate(anOrder, false);
+
+function deliveryDate(anOrder, isRush) {
+  if (isRush) {
+    let deliveryTime;
+    if(["MA", "CT"].includes(anOrder.deliveryState)){
+      deliverTime = 1;
+    }
+    else if(["NY", "NH"].includes(anOrder.deliveryState)){
+      deliverTime = 2;
+    }
+    else {
+      deliveryTime = 3;
+      }
+      return anOrder.placedOn.plusDays(1 + deliveryTime);
+  }
+  else {
+    let deliveryTime;
+    if(["MA", "CT", "NY"].includes(anOrder.deliveryState)){
+      deliverTime = 2;
+    }
+    else if(["ME", "NH"].includes(anOrder.deliveryState)){
+      deliverTime = 3;
+    }
+    else {
+      deliveryTime = 4;
+      }
+      return anOrder.placedOn.plusDays(2 + deliveryTime);
+  }
+}
+```
+
+###### 조건문 분해하기 
+
+```js
+function deliveryDate(anOrder, isRush) {
+  if (isRush) {
+    return rushDeliveryDate(anOrder);
+  }
+  else {
+    return regularDeliveryDate(anOrder);
+  }
+  function rushDeliveryDate(anOrder){
+    let deliveryTime;
+    if(["MA", "CT"].includes(anOrder.deliveryState)){
+      deliverTime = 1;
+    }
+    else if(["NY", "NH"].includes(anOrder.deliveryState)){
+      deliverTime = 2;
+    }
+    else {
+      deliveryTime = 3;
+      }
+      return anOrder.placedOn.plusDays(1 + deliveryTime);
+  }
+  function regularDeliveryDate(anOrder) {
+    let deliveryTime;
+    if(["MA", "CT", "NY"].includes(anOrder.deliveryState)){
+      deliverTime = 2;
+    }
+    else if(["ME", "NH"].includes(anOrder.deliveryState)){
+      deliverTime = 3;
+    }
+    else {
+      deliveryTime = 4;
+      }
+      return anOrder.placedOn.plusDays(2 + deliveryTime);
+  }
+
+```
+
