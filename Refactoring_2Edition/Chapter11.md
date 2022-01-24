@@ -148,3 +148,97 @@ function withinBand(usage, bottom, top) {
 }
 ```
 
+<br>
+
+### 📍 3 플래그 인수 제거하기 
+
+<br>
+
+- 플래그 인수란 호출되는 함수가 실행할 로직을 호출하는 쪽에서 선택하기 위해 전달하는 인수다. 
+
+- 호출할 수 있는 함수들이 무엇이고 어떻게 호출해야 하는지를 이해하기 어려워지기 때문에 플래그 인수보다 명시적인 함수를 제공하는 편이 깔끔하다. 
+
+- 플래그 인수가 되려면 호출하는 쪽에서 불리언 값으로 (프로그램에서 사용되는 데이터가 아닌) 리터럴 값을 건네야 한다.
+- 또한, 호출되는 함수는 그 인수를 (다른 함수에 전달하는 데이터가 아닌) 제어 흐름을 결정하는 데 사용해야 한다. 
+- 플래그 인수를 제거하면 코드가 깔끔해짐은 물론 프로그래밍 도구에도 도움을 준다. 
+
+#### 절차 
+1. 매개변수로 주어질 수 있는 값 각각에 대응하는 명시적 함수들을 생성한다. 
+
+2. 원래 함수를 호출하는 코드들을 모두 찾아서 각 리터럴 값에 대응되는 명시적 함수를 호출하도록 수정한다. 
+
+#### 예시 
+
+```js
+aShipment.deliveryDate = deliveryDate(anOrder, true);
+
+aShipment.deliveryDate = deliveryDate(anOrder, false);
+
+function deliveryDate(anOrder, isRush) {
+  if (isRush) {
+    let deliveryTime;
+    if(["MA", "CT"].includes(anOrder.deliveryState)){
+      deliverTime = 1;
+    }
+    else if(["NY", "NH"].includes(anOrder.deliveryState)){
+      deliverTime = 2;
+    }
+    else {
+      deliveryTime = 3;
+      }
+      return anOrder.placedOn.plusDays(1 + deliveryTime);
+  }
+  else {
+    let deliveryTime;
+    if(["MA", "CT", "NY"].includes(anOrder.deliveryState)){
+      deliverTime = 2;
+    }
+    else if(["ME", "NH"].includes(anOrder.deliveryState)){
+      deliverTime = 3;
+    }
+    else {
+      deliveryTime = 4;
+      }
+      return anOrder.placedOn.plusDays(2 + deliveryTime);
+  }
+}
+```
+
+###### 조건문 분해하기 
+
+```js
+function deliveryDate(anOrder, isRush) {
+  if (isRush) {
+    return rushDeliveryDate(anOrder);
+  }
+  else {
+    return regularDeliveryDate(anOrder);
+  }
+  function rushDeliveryDate(anOrder){
+    let deliveryTime;
+    if(["MA", "CT"].includes(anOrder.deliveryState)){
+      deliverTime = 1;
+    }
+    else if(["NY", "NH"].includes(anOrder.deliveryState)){
+      deliverTime = 2;
+    }
+    else {
+      deliveryTime = 3;
+      }
+      return anOrder.placedOn.plusDays(1 + deliveryTime);
+  }
+  function regularDeliveryDate(anOrder) {
+    let deliveryTime;
+    if(["MA", "CT", "NY"].includes(anOrder.deliveryState)){
+      deliverTime = 2;
+    }
+    else if(["ME", "NH"].includes(anOrder.deliveryState)){
+      deliverTime = 3;
+    }
+    else {
+      deliveryTime = 4;
+      }
+      return anOrder.placedOn.plusDays(2 + deliveryTime);
+  }
+
+```
