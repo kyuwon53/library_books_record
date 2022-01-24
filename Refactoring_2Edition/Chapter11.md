@@ -299,3 +299,21 @@ if (!aPlan.withinRange(aRoom.daysTempRange)){
 }
 ```
 
+#### 예시: 새 함수를 다른 방식으로 만들기 
+```js
+// 호출자 
+const tempRange = aRoom.daysTempRange;
+const isWithinRange = aPlan.NEWwithinRange(tempRange);
+if (!iswithinRange){
+  alert.push("방 온도가 지정 범위를 벗어났습니다.");
+}
+
+// HeatingPlan 클래스 
+NEWwithinRange(tempRange) {
+  const low = tempRange.low;
+  const high = tempRange.high;
+  const isWithinRange = this.withinRange(low, high);
+  return isWithinRange;
+}
+```
+
