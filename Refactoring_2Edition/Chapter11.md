@@ -266,3 +266,36 @@ function deliveryDate(anOrder, isRush) {
   - 수정 후에는 원래의 매개변수를 만들어내는 코드 일부가 필요 없어질 수 있다. 따라서 죽은 코드 제거하기로 없앨 수 있을 것이다. 
 5. 호출자를 모두 수정했다면 원래 함수를 인라인한다. 
 6. 새 함수의 이름을 적절히 수정하고 모든 호출자에 반영한다. 
+
+#### 예시 
+
+```js
+// 호출자 
+const low = aRoom.daysTempRange.low;
+const high = aRoom.daysTempRange.high;
+if (!aPlan.withinRange(low, high)){
+  alert.push("방 온도가 지정 범위를 벗어났습니다.");
+}
+
+// HeatingPlan 클래스 
+withinRange(bottom, top) {
+  return (bottom >= this._temperatureRange.low) 
+          && (top <= this._temperatureRange.high);
+}
+```
+
+##### 리펙터링 적용 
+
+```js
+// HeatingPlan 클래스 
+withinRange(aNumberRange) {
+  return (aNumberRange.low >= this._temperatureRange.low) &&
+         (aNumberRange.high <= this._temperatureRange.high);
+}
+
+// 호출자 
+if (!aPlan.withinRange(aRoom.daysTempRange)){
+  alert.push("방 온도가 지정 범위를 벗어났습니다.");
+}
+```
+
