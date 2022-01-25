@@ -341,3 +341,45 @@ NEWwithinRange(tempRange) {
 2. 함수 본문에서 대상 매개변수로의 참조를 모두 찾아서 그 매개변수의 값을 만들어주는 표현식을 참조하도록 바꾼다. 하나 수정할 때마다 테스트한다. 
 3. 함수 선언 바꾸기로 대상 매개변수를 없앤다. 
 
+#### 예시
+
+```js
+get finalPrice() {
+  const basePrice = this.quantity * this.itemPrice;
+  let discountLevel;
+  if (this.quantity > 100) {
+    discountLevel = 2;
+  } 
+  else {
+    discountLevel = 1;
+    return this.discountedPrice(basePrice, discountLevel);
+  }
+}
+discountedPrice(basePrice, discountLevel) {
+  switch (discountLevel) {
+    case 1: return basePrice * 0.95;
+    case 2: return basePrice * 0.9;
+  }
+}
+```
+##### 리팩토링 후 
+
+```js
+discountedPrice(basePrice, discountLevel) {
+  switch (this.discountLevel) {
+    case 1: return basePrice * 0.95;
+    case 2: return basePrice * 0.9;
+  }
+}
+
+get finalPrice() {
+  const basePrice = this.quantity * this.itemPrice;
+  return this.discountedPrice(basePrice);
+}
+discountedPrice(basePrice) {
+  switch (this.discountLevel) {
+    case 1: return basePrice * 0.95;
+    case 2: return basePrice * 0.9;
+  }
+}
+```
