@@ -416,3 +416,58 @@ discountedPrice(basePrice) {
 3. 방금 만든 변수를 인라인하여 제거한다. 
 4. 원래 함수도 인라인한다. 
 5. 새 함수의 이름을 원래 함수의 이름으로 고쳐준다. 
+
+#### 예시
+##### 리팩토링 전
+```js
+// HeatingPlan 클래스
+get targetTemperature() {
+  if (thermostat.selectedTemperature > this._max){
+    return this._max;
+  }else if (thermostat.selectedTemperature < this._min){
+    return this._min;
+  }else{
+    return thermostat.selectedTemperature;
+  }
+}
+
+// 호출자
+if (thePlan.targetTemperature > thermostat.currentTemperature){
+  setToHeat();
+}else if (thePlan.targetTemperature < thermostat.currentTemperature){
+  setToCool();
+}else {
+  setOff();
+}
+```
+- `targetTemperature()` 메서드가 전역 객체인 `thermostat`에 의존한다.
+- 이 전역 객체에 건네는 **질의 메서드를 매개변수로 옮겨서 의존서을 끊어보자.**
+
+##### 리팩토링 후 
+```js
+// HeatingPlan 클래스
+get targetTemperature(selectedTemperature) {
+  if (selectedTemperature > this._max){
+    return this._max;
+  }else if (selectedTemperature < this._min){
+    return this._min;
+  }else{
+    return selectedTemperature;
+  }
+}
+
+// 호출자
+if (thePlan.targetTemperature(thermostat.selectedTemperature) > 
+    thermostat.currentTemperature){
+  setToHeat();
+}else if (thePlan.targetTemperature(thermostat.selectedTemperature) < 
+          thermostat.currentTemperature){
+  setToCool();
+}else {
+  setOff();
+}
+```
+- 이 리팩터링을 수행하면 호출하는 쪽 코드는 전보다 다루기 어려워지는 게 보통이다. 
+- `의존성을 모듈 바깥으로 밀어낸다`함은 그 **의존성을 처리하는 책임을 호출자에게 지운다**는 뜻이기 때문이다. 
+- `HeatingPlan`클래스는 불변이 되었다. 모든 필드가 생성자에서 설정되며, 필드를 변경할 수 있는 메서드는 없다. 
+- 같은 객체의 `targetTemperature()`에 같은 인수를 넘겨 호출하면 언제나 똑같은 결과를 돌려줄 것이다. 
