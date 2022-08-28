@@ -11,6 +11,14 @@
 |[오브젝트](http://www.yes24.com/Product/Goods/74219491?OzSrank=1)|[스프링 부트와 AWS로 혼자 구현하는 웹 서비스](http://www.yes24.com/Product/Goods/83849117)|[하루 3분 네트워크 교실](http://www.yes24.com/Product/Goods/30670329)|
 |![오브젝트](http://image.yes24.com/goods/74219491/L)|![스프링 부트와 AWS로 혼자 구현하는 웹 서비스](http://image.yes24.com/goods/83849117/L)|![하루 3분 네트워크 교실](http://image.yes24.com/momo/TopCate900/MidCate009/89983806.jpg)|
 
+## 🎈 스터디 진행한 책 🎈
+
+|[자바스크립트 코딩의 기술](http://www.yes24.com/Product/Goods/85019231?OzSrank=12)|[코어 자바스크립트](http://www.yes24.com/Product/Goods/78586788)|[리팩터링 2판](http://www.yes24.com/Product/Goods/89649360)|
+| :---: | :---: | :---: |
+|![자바스크립트 코딩의 기술](http://image.yes24.com/goods/85019231/L)|![코어 자바스크립트](http://image.yes24.com/goods/78586788/L)|![리팩터링 2판](http://image.yes24.com/goods/89649360/L)|
+|[프로그래머의 뇌](http://www.yes24.com/Product/Goods/105911017)|[실용주의 프로그래머](http://www.yes24.com/Product/Goods/12501565)|[데이터 중심 애플리케이션 설계](http://www.yes24.com/Product/Goods/59566585)|
+|![프로그래머의 뇌](http://image.yes24.com/goods/105911017/L)|![실용주의 프로그래머](http://image.yes24.com/goods/12501565/L)|![데이터 중심 애플리케이션 설계](http://image.yes24.com/goods/59566585/L)|
+
 ## ⭐ 읽은 책 ⭐
 
 |[Do it! 오라클로 배우는 데이터베이스 입문](http://www.yes24.com/Product/Goods/65849798)|[Do it! HTML+CSS+자바스크립트 웹 표준의 정석](http://www.yes24.com/Product/Goods/96674934)|[모두의 SQL](http://www.yes24.com/Product/Goods/64434562?OzSrank=1)|
@@ -30,12 +38,3 @@
 |![그림으로 배우는 HTTP & Network](http://image.yes24.com/momo/TopCate448/MidCate010/44791452.jpg)|![개발자의 글쓰기](http://image.yes24.com/goods/79378905/L)|![데이터 중심 애플리케이션 설계](http://image.yes24.com/goods/59566585/L)|
 |[그림으로 배우는 프로그래밍 구조](http://www.yes24.com/Product/Goods/103191961)|||
 |![그림으로 배우는 프로그래밍 구조](http://image.yes24.com/goods/103191961/L)|||
-
-## 🎈 스터디 진행한 책 🎈
-
-|[자바스크립트 코딩의 기술](http://www.yes24.com/Product/Goods/85019231?OzSrank=12)|[코어 자바스크립트](http://www.yes24.com/Product/Goods/78586788)|[리팩터링 2판](http://www.yes24.com/Product/Goods/89649360)|
-| :---: | :---: | :---: |
-|![자바스크립트 코딩의 기술](http://image.yes24.com/goods/85019231/L)|![코어 자바스크립트](http://image.yes24.com/goods/78586788/L)|![리팩터링 2판](http://image.yes24.com/goods/89649360/L)|
-|[프로그래머의 뇌](http://www.yes24.com/Product/Goods/105911017)|[실용주의 프로그래머](http://www.yes24.com/Product/Goods/12501565)|[데이터 중심 애플리케이션 설계](http://www.yes24.com/Product/Goods/59566585)|
-|![프로그래머의 뇌](http://image.yes24.com/goods/105911017/L)|![실용주의 프로그래머](http://image.yes24.com/goods/12501565/L)|![데이터 중심 애플리케이션 설계](http://image.yes24.com/goods/59566585/L)|
-
