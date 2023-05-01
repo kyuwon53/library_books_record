@@ -12,8 +12,8 @@
 ![파이브 라인스 오브 코드](http://image.yes24.com/goods/116904325/L)|![면접을 위한 CS 전공지식 노트](http://image.yes24.com/goods/108887922/L)|![코딩인터뷰 완전분석](http://image.yes24.com/goods/44305533/L)|
 |[Real MySQL 8.0 (1권) ](http://www.yes24.com/Product/Goods/103415627)|[Real MySQL 8.0 (2권) ](http://www.yes24.com/Product/Goods/103415767)|[쏙쏙 들어오는 함수형 코딩](http://www.yes24.com/Product/Goods/108748841)|
 |![Real MySQL 8.0 (1권)](http://image.yes24.com/goods/103415627/L)|![리얼마이에스큐엘2권](http://image.yes24.com/goods/103415767/L)|![쏙쏙 들어오는 함수형 코딩](http://image.yes24.com/goods/108748841/L)|
-|[구글 엔지니어는 이렇게 일한다](http://www.yes24.com/Product/Goods/109182479)|[]()||
-|![구글 엔지니어는 이렇게 일한다](http://image.yes24.com/goods/109182479/L)|![]()||
+|[구글 엔지니어는 이렇게 일한다](http://www.yes24.com/Product/Goods/109182479)|[오브젝트](http://www.yes24.com/Product/Goods/74219491?OzSrank=1)||
+|![구글 엔지니어는 이렇게 일한다](http://image.yes24.com/goods/109182479/L)|![오브젝트](http://image.yes24.com/goods/74219491/L)||
 
 ## ⭐ 읽은 책 ⭐
 
